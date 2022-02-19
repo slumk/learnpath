@@ -24,7 +24,7 @@ const teacherSchema = new mongoose.Schema(
 		portfolio: {
 			type: String,
 		},
-		reports: {
+		report_count: {
 			type: Number,
 			default: 0
 		},

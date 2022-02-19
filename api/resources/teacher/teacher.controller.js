@@ -37,7 +37,7 @@ export const createCourse = async (req) => {
 export const deleteCourse = async (course_id) => {
 	try {
 		await courseModel.findByIdAndDelete(course_id)
-		console.log(`course ${course_id} deleted successfully`)
+		return true
 	} catch (error) {
 		console.error(error)
 		return false

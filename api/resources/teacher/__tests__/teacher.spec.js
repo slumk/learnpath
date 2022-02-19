@@ -1,13 +1,37 @@
 import { capsuleModel } from '../../capsule/capsule.model'
 import { courseModel } from '../../course/course.model'
 import { test_db_connect } from '../../../utils/db_connect'
-import { createCapsule, createCourse } from '../teacher.controller'
+import { createCapsule, createCourse, deleteCapsule, deleteCourse } from '../teacher.controller'
 import mongoose from 'mongoose'
 
 beforeAll(async () => {
 	await test_db_connect()
 	capsuleModel.deleteMany()
 	courseModel.deleteMany()
+	const test_entry = new capsuleModel({
+		_id: '507f1f77bcf86cd799439011',
+		yt_src: 'somerandomlink',
+		label: 'test_label',
+		description: 'this is a test description about test',
+		created_by: new mongoose.Types.ObjectId(),
+		tags: ['test-1', 'test-2', 'test-3']
+	})
+	await test_entry.save()
+	const gen_test_capsules = () => {
+		const capsule_array = []
+		for (var i = 0; i < 7; i++) {
+			capsule_array.push(mongoose.Types.ObjectId())
+		}
+		return capsule_array
+	}
+	const test_course = new courseModel({
+		_id: '507f1f77bcf86cd799439011',
+		name: 'test-course',
+		desc: 'this is a test-description',
+		created_by: new mongoose.Types.ObjectId(),
+		capsules: gen_test_capsules()
+	})
+	await test_course.save()
 })
 
 test('Creating Capsule', async () => {
@@ -44,4 +68,16 @@ test('Creating Course', async () => {
 	const is_course_found = courseModel.findById(created_course._id)
 	expect(is_course_found).not.toBe([])
 	expect(is_course_found).toBeTruthy()
+})
+
+test('Deleting Course', async () => {
+	await deleteCourse('507f1f77bcf86cd799439011')
+	const course = await courseModel.findById('507f1f77bcf86cd799439011')
+	expect(course).toBeNull()
+})
+
+test('Deleting Capsule', async () => {
+	await deleteCapsule('507f1f77bcf86cd799439011')
+	const cap = await capsuleModel.findById('507f1f77bcf86cd799439011')
+	expect(cap).toBeNull()
 })
