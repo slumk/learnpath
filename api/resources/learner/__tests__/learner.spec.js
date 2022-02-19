@@ -1,8 +1,9 @@
 import { test_db_connect } from '../../../utils/db_connect'
 import { capsuleModel } from '../../capsule/capsule.model'
 import mongoose from 'mongoose'
-import { bookmarkCapsule, downvoteCapsule, minusDownvoteCapsule, minusUpvoteCapsule, removeBookmark, requestAccountDeletion, upvoteCapsule, viewLearnerInfo } from '../learner.controller'
+import { requestUpgradeToTeacher, bookmarkCapsule, minusUpvoteCapsule, removeBookmark, requestAccountDeletion, upvoteCapsule, viewLearnerInfo, enrollCourse, reportTeacher } from '../learner.controller'
 import { learnerModel } from '../learner.model'
+import { teacherModel } from '../../teacher/teacher.model'
 
 beforeAll(async () => {
 	await test_db_connect()
@@ -31,6 +32,14 @@ beforeAll(async () => {
 		age: 25,        
 	})
 	await test_user.save()
+	const test_teacher = new teacherModel({
+		_id: '620fb734dd24eb1316beacff',
+		teacher_name: 'teacher',
+		teacher_desc: 'this is a test description',
+		portfolio: 'instagram.com/testhandle',
+		learner_id: new mongoose.Types.ObjectId()
+	})
+	await test_teacher.save()
 })
 
 test('Upvoting Capsule', async () => {
@@ -43,18 +52,6 @@ test('Un-Upvotes a capsule', async () => {
 	await minusUpvoteCapsule('620fa734dd24eb1316beabff')
 	const capsule = await capsuleModel.findById('620fa734dd24eb1316beabff')
 	expect(capsule.upvote_count).toBe(0)
-})
-
-test('Downvotes capsule', async () => {
-	await downvoteCapsule('620fa734dd24eb1316beabff')
-	const capsule = await capsuleModel.findById('620fa734dd24eb1316beabff')
-	expect(capsule.downvote_count).toBe(1)
-})
-
-test('Un-Downvotes a capsule', async () => {
-	await minusDownvoteCapsule('620fa734dd24eb1316beabff')
-	const capsule = await capsuleModel.findById('620fa734dd24eb1316beabff')
-	expect(capsule.downvote_count).toBe(0)
 })
 
 test('Request account deletion', async () => {
@@ -80,4 +77,36 @@ test('Fetching Learner Details', async () => {
 	expect(learner).not.toBe([])
 	expect(learner).not.toBeUndefined()
 	expect(learner).toBeTruthy()
+})
+
+test('Requests Upgrade To Teacher', async () => {
+	const req_mock = {}
+	req_mock.body = {
+		name: 'teacher',
+		desc: 'this is a test description',
+		publichandle: 'instagram.com/testhandle'
+	}
+	req_mock.user_id = new mongoose.Types.ObjectId()
+	await requestUpgradeToTeacher(req_mock)
+	const teacher = await teacherModel.find({ learner_id: req_mock.user_id})
+	expect(teacher.is_approved).toBeFalsy()
+})
+
+test('Enrolling in course', async () => {
+	const some_random_course_id = new mongoose.Types.ObjectId()
+	await enrollCourse('620fa734dd24eb1316beacff', some_random_course_id)
+	const learner = await learnerModel.findById('620fa734dd24eb1316beacff')
+	expect(learner.enrolled_courses).not.toBe([])
+})
+
+test('Request Account Deletion', async () => {
+	await requestAccountDeletion('620fa734dd24eb1316beacff')
+	const learner = await learnerModel.findById('620fa734dd24eb1316beacff')
+	expect(learner.requested_delete).toBeTruthy()
+})
+
+test('Reporting Teacher', async () => {
+	await reportTeacher('620fb734dd24eb1316beacff')
+	const teacher = await teacherModel.findById('620fb734dd24eb1316beacff')
+	expect(teacher.report_count).toBe(1)
 })
