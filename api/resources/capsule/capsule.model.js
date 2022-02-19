@@ -29,10 +29,6 @@ const capsuleSchema = new mongoose.Schema(
 			type: Number,
 			default: 0
 		},
-		downvote_count: {
-			type: Number,
-			default: 0
-		},
 		report_count: {
 			type: Number,
 			default: 0

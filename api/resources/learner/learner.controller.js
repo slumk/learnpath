@@ -2,10 +2,6 @@ import { capsuleModel } from '../capsule/capsule.model.js'
 import { learnerModel } from './learner.model.js'
 import { teacherModel } from '../teacher/teacher.model.js'
 
-// const fetchOwnAssets = async (model, user_id) => {
-
-// }
-
 export const requestUpgradeToTeacher = async (req) => {
 	try {
 		const { name, desc, publichandle } = req.body
@@ -57,26 +53,6 @@ export const minusUpvoteCapsule = async (capsule_id) => {
 	}
 }
 
-export const downvoteCapsule = async (capsule_id) => {
-	try {
-		await capsuleModel.findByIdAndUpdate(capsule_id, { $inc: { downvote_count: 1 } })
-		return true
-	} catch (error) {
-		console.error(error)
-		return false
-	}
-}
-
-export const minusDownvoteCapsule = async (capsule_id) => {
-	try {
-		await capsuleModel.findByIdAndUpdate(capsule_id, { $inc: { downvote_count: -1 } })
-		return true
-	} catch (error) {
-		console.error(error)
-		return false
-	}
-}
-
 export const bookmarkCapsule = async (user_id, capsule_id) => {
 	try {
 		await learnerModel.findByIdAndUpdate(user_id, { $addToSet: { bookmarks: capsule_id } })
@@ -100,6 +76,27 @@ export const viewLearnerInfo = async (user_id) => {
 	try {
 		const learner = await learnerModel.findById(user_id).select('-age -email -joined_date').lean()
 		return { data: learner }
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+
+export const enrollCourse = async (user_id, course_id) => {
+	try {
+		await learnerModel.findByIdAndUpdate(user_id, { $addToSet: { enrolled_courses: course_id } })
+		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+
+export const reportTeacher = async (teacher_id) => {
+	try {
+		await teacherModel.findByIdAndUpdate(teacher_id,
+			{ $inc: { report_count: 1 } })
+		return true
 	} catch (error) {
 		console.error(error)
 		return false
