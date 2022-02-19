@@ -6,7 +6,6 @@ import { fetchCourses, fetchSingleCourse, reportCourse } from '../course.control
 beforeAll(async () => {
 	await test_db_connect()
 	await courseModel.deleteMany()
-	console.log('database cleared')
 	// test_capsules_for_inserting_into_course
 	const gen_test_capsules = () => {
 		const capsule_array = []

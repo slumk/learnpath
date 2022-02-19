@@ -6,7 +6,6 @@ import { fetchCapsules, fetchSingleCapsule, reportCapsule, searchCapsule } from 
 beforeAll(async () => {
 	await test_db_connect()
 	await capsuleModel.deleteMany()
-	console.log('database cleared for test')
 	// inserting a test entry in database
 	// setting capsule as approved and visible
 	// for testing purposes
@@ -21,7 +20,6 @@ beforeAll(async () => {
 		is_visible: true
 	})
 	await test_entry.save()
-	console.log('test entry inserted into DB')
 }) 
 
 test('Fetching All Capsules', async () => {

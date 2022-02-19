@@ -7,7 +7,6 @@ import { learnerModel } from '../learner.model'
 beforeAll(async () => {
 	await test_db_connect()
 	await capsuleModel.deleteMany()
-	console.log('database cleared for test')
 	// inserting a test entry in database
 	// setting capsule as approved and visible
 	// for testing purposes
@@ -22,7 +21,6 @@ beforeAll(async () => {
 		is_visible: true
 	})
 	await test_entry.save()
-	console.log('test capsule inserted into DB')
 	await learnerModel.deleteMany()
 	const test_user = new learnerModel({
 		_id: '620fa734dd24eb1316beacff',
