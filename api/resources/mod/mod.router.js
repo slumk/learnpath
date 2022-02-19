@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { protectForMod } from '../../utils/auth/protectRoutes.js'
-import { approveCapsule, approveCourse, approveTeacher, fetchPendingCapsules, fetchPendingTeachers, fetchPendingCourses } from './mod.controller.js'
+import { approveCapsule, approveCourse, approveTeacher, fetchPendingCapsules, fetchPendingTeachers, fetchPendingCourses, fetchReportedCapsules, fetchReportedCourses, fetchReportedTeachers } from './mod.controller.js'
 
 const modRouter = Router()
 
@@ -54,6 +54,34 @@ modRouter.put('/approve/teacher/:id', async (req, res) => {
 		return res.status(202).end()
 	}
 	return res.status(400).end()
+})
+
+modRouter.get('/fetch/reported/:what', async (req, res) => {
+	switch (req.params.what) {
+	case 'capsules': {
+		const reported_capsules = await fetchReportedCapsules()
+		if (reported_capsules) {
+			return res.status(200).json(reported_capsules).end()
+		}
+		return res.status(404).end()
+	}
+	case 'courses': {
+		const reported_courses = await fetchReportedCourses()
+		if (reported_courses) {
+			return res.status(200).json(reported_courses).end()
+		}
+		return res.status(404).end()
+	}
+	case 'learners': {
+		const reported_teacher = await fetchReportedTeachers()
+		if (reported_teacher) { 
+			return res.status(200).json(reported_teacher).end()
+		}
+		return res.status(404).end()
+	}
+	default:
+		return res.status(404).end()
+	}
 })
 
 export default modRouter

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { protectForLearner } from '../../utils/auth/protectRoutes.js'
-import { upvoteCapsule, downvoteCapsule, bookmarkCapsule, viewLearnerInfo, removeBookmark, requestUpgradeToTeacher, minusDownvoteCapsule, minusUpvoteCapsule } from './learner.controller.js'
+import { upvoteCapsule, bookmarkCapsule, viewLearnerInfo, removeBookmark, requestUpgradeToTeacher, minusUpvoteCapsule, enrollCourse, reportTeacher } from './learner.controller.js'
 const learnerRouter = Router()
 
 learnerRouter.use( async (req, res, next) => ( protectForLearner(req, res, next) ))
@@ -15,22 +15,6 @@ learnerRouter.put('/upvote/:id', async (req, res) => {
 
 learnerRouter.put('/upvote/minus/:id', async (req, res) => {
 	const status = await minusUpvoteCapsule(req.params.id)
-	if (!status) {
-		return res.status(400).end()
-	}
-	return res.status(202).end()
-})
-
-learnerRouter.put('/downvote/:id', async (req, res) => {
-	const status = await downvoteCapsule(req.params.id)
-	if (!status) {
-		return res.status(400).end()
-	}
-	return res.status(202).end()
-})
-
-learnerRouter.put('/downvote/minus/:id', async (req, res) => {
-	const status = await minusDownvoteCapsule(req.params.id)
 	if (!status) {
 		return res.status(400).end()
 	}
@@ -68,4 +52,21 @@ learnerRouter.post('/request/upgrade', async (req, res) => {
 	}
 	return res.status(400).end()
 })
+
+learnerRouter.put('/enroll/:course_id', async (req, res) => {
+	const status = await enrollCourse(req.user_id, req.params.course_id)
+	if (status) {
+		return res.status(202).end()
+	}
+	return res.status(400).end()
+})
+
+learnerRouter.put('/report/teacher/:teacher_id', async (req, res) => {
+	const status = await reportTeacher(req.params.teacher_id)
+	if (status) {
+		return res.status(200).end()
+	}
+	return res.status(400).end()
+})
+
 export default learnerRouter
