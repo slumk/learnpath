@@ -4,6 +4,7 @@ import { MainPageComponent } from './resources/home_fixed/mainPage.jsx'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { useState } from 'react'
 import { SearchCapsule } from './resources/capsule/searchCapsule.jsx'
+import { FetchCapsuleInfo } from './resources/capsule/fetchCapsuleInfo.jsx'
 
 export const App = () => {
   const [searchedTerm, updateTerm] = useState('')
@@ -25,7 +26,8 @@ render(<Router>
   <Routes>
     <Route path='/' element={<App />} />
     <Route path='/capsules' element={<App />} >
-          <Route path='search/:name' element={ <SearchCapsule /> } />
+      <Route path='search/:name' element={<SearchCapsule />} />
+      <Route path='capsule/:id' element={<FetchCapsuleInfo />} />
       </Route>
     </Routes>
       </Router>, document.getElementById('root'))
