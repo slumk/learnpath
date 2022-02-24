@@ -1,33 +1,26 @@
-import { render } from 'react-dom'
 import { NavBarComponent } from './resources/home_fixed/navBar.jsx'
 import { MainPageComponent } from './resources/home_fixed/mainPage.jsx'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { useState } from 'react'
-import { SearchCapsule } from './resources/capsule/searchCapsule.jsx'
-import { FetchCapsuleInfo } from './resources/capsule/fetchCapsuleInfo.jsx'
+import { createContext } from 'react'
+export const AuthContext = createContext()
 
 export const App = () => {
-  const [searchedTerm, updateTerm] = useState('')
-  const handleSearchdata = (data) => updateTerm(data)
+  const initialAuthData = {
+    isLoggedin: false,
+    is_teacher: false,
+    is_mod: false,
+    is_god: false
+  }
   document.title = 'Learnpath - Home'
   return (
+    <AuthContext.Provider value = {initialAuthData}>
   <div className='h-screen relative'>
       <div className='m-auto px-1'>
-          <div><NavBarComponent handleSearchdata={ handleSearchdata }/></div>
+          <div><NavBarComponent/></div>
       </div>
       <div>
-        <div><MainPageComponent searched= { searchedTerm }/></div>
+        <div><MainPageComponent/></div>
       </div>
-    </div>
+      </div>
+      </AuthContext.Provider>
   )
 }
-
-render(<Router>
-  <Routes>
-    <Route path='/' element={<App />} />
-    <Route path='/capsules' element={<App />} >
-      <Route path='search/:name' element={<SearchCapsule />} />
-      <Route path='capsule/:id' element={<FetchCapsuleInfo />} />
-      </Route>
-    </Routes>
-      </Router>, document.getElementById('root'))

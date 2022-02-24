@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from 'react'
+import { useParams } from 'react-router-dom'
 import { buildThumbnailURL, CapsuleGrid } from './fetchCapsules'
 
 const searchingState = {
@@ -43,7 +44,8 @@ const searchCapsuleReducer = (state, action) => {
   }
 }
 
-export const SearchCapsule = ({ name }) => {
+export const SearchCapsule = () => {
+  const { name } = useParams()
   const [searchState, dispatch] = useReducer(searchCapsuleReducer, searchingState)
   useEffect(async () => {
     const searchResponse = await fetch('/api/capsules/search/' + name)
@@ -62,7 +64,8 @@ export const SearchCapsule = ({ name }) => {
           : searchState.is_failed
             ? <NotFound />
             : searchState.got_response
-              ? <div><h1 className='text-3xl mx-3 mt-2'>Your Search Results</h1>
+              ? <div className='container mx-auto'>
+                <h1 className='text-3xl mx-3 mt-2'>Search Results</h1>
                <div className='container mt-3 mx-auto text-center grid grid-cols-3 gap-2'>
                 {(searchState.got_response.result).map((item) => <SearchResults key={item._id} capsule={item} />)}
                 </div>
