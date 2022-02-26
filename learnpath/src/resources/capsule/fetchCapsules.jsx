@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react' // use useContext
-import { Link } from 'react-router-dom'
-// import { AuthContext } from '../../App'
+import { useContext, useEffect, useState } from 'react' // use useContext
+import { Link, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../App'
 import likeIcon from '../../icons/like.png'
+import likedIcon from '../../icons/liked.png'
 import reportIcon from '../../icons/report.png'
-// import bookmarkIcon from '../../icons/bookmark.png'
-// import bookmarkedIcon from '../../icons/bookmarked.png'
+import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
+import bookmarkIcon from '../../icons/bookmark.png'
+import bookmarkedIcon from '../../icons/bookmarked.png'
 // import dangerIcon from '../../icons/danger.png'
 import './custom_fonts.css'
+import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 // import { FetchCapsuleInfo } from './fetchCapsuleInfo'
 
 export const FetchCapsules = () => {
@@ -48,17 +51,59 @@ const reportCapsule = async (capsuleId) => {
 }
 
 export const CapsuleGrid = ({ capsule }) => {
-  // const value = useContext(AuthContext)
+  const value = useContext(AuthContext)
+  const [isUpvoted, setUpvoteStatus] = useState(false)
+  const [upvoteCount, setUpvoteCount] = useState(capsule.upvote_count)
+  const [isBookmarked, setBookmarkStatus] = useState(false)
+  const navigate = useNavigate()
   return (
   <div className='justify-center rounded-lg border-slate-900 border-2 cursor-default relative'>
       <Link to={ '/capsule/' + capsule._id }><img src={capsule.yt_thumbnail_url} /></Link>
     <h1 className='"absolute inset-x-0 bottom-0 text-center text-3xl' id='capsule-title'>{capsule.label}</h1>
     <div className='grid grid-cols-2 p-1'>
       <div className='flex'>
-        <img src={likeIcon} />
-        <span className='mx-0.5'>{capsule.upvote_count}</span>
+          <img src={!isUpvoted ? likeIcon : likedIcon}
+            onClick = {
+              value.auth
+                ? async (e) => {
+                  if (isUpvoted) {
+                    setUpvoteStatus(false)
+                    if (await minusUpvoteCapsule(capsule._id)) {
+                      setUpvoteCount((prevCount) => prevCount - 1)
+                    } else {
+                      navigate('/login')
+                    }
+                  } else {
+                    setUpvoteStatus(true)
+                    if (await upvoteCapsule(capsule._id)) {
+                      setUpvoteCount((prevCount) => prevCount + 1)
+                    } else {
+                      navigate('/login')
+                    }
+                  }
+                }
+                : (e) => e.preventDefault()
+             }/>
+        <span className='mx-0.5'>{upvoteCount}</span>
       </div>
-      <div className='flex justify-end gap-1'>
+        <div className='flex justify-end gap-1'>
+          <img src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
+            onClick= {
+              value.auth
+                ? async (e) => {
+                  if (isBookmarked) {
+                    if (await removeBookmark(capsule._id)) {
+                      setBookmarkStatus(false)
+                    }
+                  } else {
+                    if (await bookmarkCapsule(capsule._id)) {
+                      setBookmarkStatus(true)
+                    }
+                  }
+                }
+                : (e) => e.preventDefault()
+          }
+          />
           <img src={reportIcon}
             onClick={(event) => {
               if (reportCapsule(capsule._id)) {
