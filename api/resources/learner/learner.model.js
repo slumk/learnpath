@@ -61,10 +61,6 @@ const learnerSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false
 		},
-		is_banned: {
-			type: Boolean,
-			default: false
-		},
 		joined_date: {
 			type: Date,
 			default: Date.now()

@@ -1,6 +1,7 @@
 import { capsuleModel } from '../capsule/capsule.model.js'
 import { learnerModel } from './learner.model.js'
 import { teacherModel } from '../teacher/teacher.model.js'
+import { modModel } from '../mod/mod.model.js'
 
 export const requestUpgradeToTeacher = async (req) => {
 	try {
@@ -99,6 +100,26 @@ export const reportTeacher = async (teacher_id) => {
 		return true
 	} catch (error) {
 		console.error(error)
+		return false
+	}
+}
+
+export const fetchLearnerRelations = async (user_id) => {
+	try {
+		const user = {
+			is_teacher: false,
+			is_mod: false,
+		}
+		const is_teacher = await teacherModel.find({ learner_id: user_id })
+		const is_mod = await modModel.find({ learner_id: user_id })
+		if (is_teacher) {
+			user.is_teacher = true
+		}
+		if (is_mod) {
+			user.is_mod = true
+		}
+		return user
+	} catch (error) {
 		return false
 	}
 }
