@@ -3,7 +3,6 @@ export const fetchSingleCapsule = async (id) => {
 	try {
 		const capsule = await capsuleModel
 			.findById(id)
-			.lean()
 		if (!capsule) {
 			return false
 		}
@@ -17,8 +16,7 @@ export const fetchSingleCapsule = async (id) => {
 export const fetchCapsules = async () => {
 	try {
 		const capsules = await capsuleModel
-			.find({ is_approved: true, is_visible: true, $limit: 5 })
-			.lean()
+			.find({ is_approved: true, is_visible: true, $limit: 15 })
 		if (!capsules) {
 			return false
 		}

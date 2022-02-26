@@ -22,10 +22,10 @@ capsuleRouter.get('/capsule/:id', async (req, res) => {
 // searchs in capsules using a search term
 capsuleRouter.get('/search/:term', async (req, res) =>{
 	const result = await searchCapsule(req.params.term)
-	if(!result){
-		res.status(404).json({ message: 'no match found' }).end()
+	if (!result) {
+		return res.status(404).end()
 	}
-	res.status(200).json(result).end()
+	return res.json(result).status(200).end()
 })
 
 // reports a capsule

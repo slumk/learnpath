@@ -32,6 +32,7 @@ beforeAll(async () => {
 		age: 25,        
 	})
 	await test_user.save()
+	await teacherModel.deleteMany()
 	const test_teacher = new teacherModel({
 		_id: '620fb734dd24eb1316beacff',
 		teacher_name: 'teacher',

@@ -6,10 +6,7 @@ import { makeToken } from './jwtOps.js'
 export const loginLearner = async (learner_email, password) => {
 	try {
 		const learner = await learnerModel.find({ email: learner_email })
-			.select('password is_banned')
-		if (learner.is_banned) {
-			return false
-		}
+			.select('password')
 		const match = await bcrypt.compare(password, learner[0].password)
 		if (match) {
 			const user_id = (learner[0]._id).toString()

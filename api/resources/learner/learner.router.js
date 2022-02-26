@@ -40,7 +40,7 @@ learnerRouter.put('/bookmark/remove/:id', async (req, res) => {
 learnerRouter.get('/my/info', async (req, res) => {
 	const info = await viewLearnerInfo(req.user_id)
 	if (info) {
-		return res.status(200).send({ data: info }).end()
+		return res.status(200).json( info ).end()
 	}
 	return res.status(404).end()
 })

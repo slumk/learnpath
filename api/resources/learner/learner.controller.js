@@ -74,7 +74,7 @@ export const removeBookmark = async (user_id, capsule_id) => {
 
 export const viewLearnerInfo = async (user_id) => {
 	try {
-		const learner = await learnerModel.findById(user_id).select('-age -email -joined_date').lean()
+		const learner = await learnerModel.findById(user_id).select('-password -age').lean()
 		return { data: learner }
 	} catch (error) {
 		console.error(error)

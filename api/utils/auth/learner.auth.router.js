@@ -13,10 +13,14 @@ authRouter.post('/create', async (req, res) => {
 })
 
 authRouter.post('/login', async (req, res) => {
-	const { email, password } = req.body
+	const { email, password } = await req.body
 	const token = await loginLearner(email, password)
 	if (token) {
-		return res.status(200).cookie('key', token, { httpOnly: true }).end()
+		return res.status(200)
+			.cookie('key', token, { httpOnly: true, sameSite: true })
+			.cookie('learnpath-key', true, {expires: new Date(Date.now() + 7200000), sameSite: true})
+			.json({})
+			.end()
 	}
 	return res.status(400).end()
 })
