@@ -40,12 +40,14 @@ export const NavBarComponent = (props) => {
             </button>
         </div>
         <div className=' self-center'>
+          <Link to='/my/info'>
           <img
+            className={`${value.auth.isLoggedin ? '' : 'hidden'} is rounded-full text-3xl px-4 py-2 mx-1.5 hover:bg-green-500`}
             src={userIcon}
             width="90px"
             height="90px"
-              className={`${value.auth.isLoggedin ? '' : 'hidden'} is rounded-full text-3xl px-4 py-2 mx-1.5 hover:bg-green-500`}
             />
+            </Link>
           </div>
         </div>
       </div>
