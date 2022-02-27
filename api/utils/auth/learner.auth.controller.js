@@ -27,16 +27,14 @@ export const createLearner = async (learner_name, learner_email, password, age) 
 			.then((hash) => {
 				return hash
 			})
-		const new_someone = await learnerModel.create(
+		await learnerModel.create(
 			{
 				name : learner_name,
 				email : learner_email,
 				password: password_hash,
 				age: age
 			})
-		const { _id } = new_someone
-		const token = makeToken(_id)
-		return { data : token }
+		return true
 	}
 	catch (error) {
 		if (error instanceof mongoose.Error.ValidationError) {

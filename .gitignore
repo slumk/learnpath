@@ -5,3 +5,4 @@ learnpath/.eslintrc.json
 learnpath/node_modules
 learnpath/.parcel-cache
 learnpath/dist
+.vscode/

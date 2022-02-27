@@ -28,6 +28,10 @@ const teacherSchema = new mongoose.Schema(
 			type: Number,
 			default: 0
 		},
+		is_banned: {
+			type: Boolean,
+			default: false
+		},
 		created_at: {
 			type: Date,
 			default: Date.now()
