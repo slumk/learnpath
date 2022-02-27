@@ -6,13 +6,15 @@ const modSchema = new mongoose.Schema(
 			ref: 'Learner',
 			required: true
 		},
-		is_approved: {
-			type: Boolean,
-			default: false,
-		},
-		place: {
+		gender: {
 			type: String,
-			required: true
+			required: true,
+			enum: [ 'M', 'F', 'Trans', 'Other' ]
+		},
+		region: {
+			type: String,
+			required: true,
+			enum: ['Asia Pacific', 'Americas', 'Europe', 'Middle East']
 		},
 		age: {
 			type: Number,

@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react'
 import { useParams } from 'react-router-dom'
-import { buildThumbnailURL, CapsuleGrid } from './fetchCapsules'
+import { buildThumbnailURL } from './fetchCapsules'
 
 const searchingState = {
   loading: true,
@@ -31,7 +31,13 @@ const NotFound = () => {
 const SearchResults = ({ capsule }) => {
   buildThumbnailURL(capsule)
   return (
-      <CapsuleGrid key={capsule._id} capsule={capsule} />
+      <div className='mx-auto mt-2 container flex justify-center'>
+        <div className='flex gap-2'>
+        <img src={capsule.yt_thumbnail_url} width="150px" height="200px"/>
+        <h3 className='text-2xl'>{capsule.label}</h3>
+        <span>{capsule.description}</span>
+        </div>
+          </div>
   )
 }
 
@@ -64,12 +70,9 @@ export const SearchCapsule = () => {
           : searchState.is_failed
             ? <NotFound />
             : searchState.got_response
-              ? <div className='container mx-auto'>
-                <h1 className='text-3xl mx-3 mt-2'>Search Results</h1>
-               <div className='container mt-3 mx-auto text-center grid grid-cols-3 gap-2'>
+              ? <div className='mt-8'>
                 {(searchState.got_response.result).map((item) => <SearchResults key={item._id} capsule={item} />)}
-                </div>
-                </div>
+              </div>
               : <div>Not Found </div>
       }
       </div>

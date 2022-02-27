@@ -1,13 +1,16 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../App'
 import './custom_fonts.css'
 import userIcon from '../../icons/user.png'
 
 export const NavBarComponent = (props) => {
-  const value = useContext(AuthContext)
+  const { auth } = useContext(AuthContext)
   const navigate = useNavigate()
   const [clicked, setClickStatus] = useState(false)
+  useEffect(() => {
+    setClickStatus(false)
+  }, [auth])
   return (
     <div className='bg-gradient-to-r from-sky-300 grid grid-cols-2'>
             <div className=" m-2 px-1 py-1.5">
@@ -32,7 +35,7 @@ export const NavBarComponent = (props) => {
                     </button>
         </form>
         <div className=' self-center'>
-          <button className={`${clicked ? 'hidden' : ''} ${value.auth.isLoggedin ? 'hidden' : ''} is rounded-full text-3xl px-4 py-2 mx-1.5 bg-green-200 hover:bg-red-500`}
+          <button className={`${clicked ? 'hidden' : ''} ${auth.isLoggedin ? 'hidden' : ''} is rounded-full text-3xl px-4 py-2 mx-1.5 bg-green-200 hover:bg-red-500`}
           onClick={(e) => setClickStatus(true)}>
           <Link to='/login'>
             Login
@@ -42,7 +45,7 @@ export const NavBarComponent = (props) => {
         <div className=' self-center'>
           <Link to='/my/info'>
           <img
-            className={`${value.auth.isLoggedin ? '' : 'hidden'} is rounded-full text-3xl px-4 py-2 mx-1.5 hover:bg-green-500`}
+            className={`${auth.isLoggedin ? '' : 'hidden'} is rounded-full text-3xl px-4 py-2 mx-1.5 hover:bg-green-500`}
             src={userIcon}
             width="90px"
             height="90px"
