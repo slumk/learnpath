@@ -6,14 +6,15 @@ import teacherIcon from '../../icons/teacher.png'
 import { AuthContext } from '../../App'
 import { checkRelations } from './checkLearner'
 import { logoutUser } from '../auth/logOut'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-export const MyInfo = () => {
+const MyInfo = () => {
+  const { auth, setAuth } = useContext(AuthContext)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [userInfo, setUserInfo] = useState({})
-  const { auth, setAuth } = useContext(AuthContext)
   useEffect(async () => {
+    document.title = userInfo.name + ' - My Profile'
     const learnerInfo = await fetchLearnerInfo()
     setUserInfo(learnerInfo)
     setLoading(false)
@@ -46,14 +47,18 @@ export const MyInfo = () => {
           <div className='grid grid-cols-2'>
               <div className='flex justify-center'>
                   <img src={teacherIcon} />
-                  <span>{ auth.is_teacher ? '\u2705' : '\u274C' }</span>
+          <span>{ generateApprDingBats() }</span>
               </div>
               <div className='flex justify-center self-center gap-1.5'>
                   <span className='font-bold text-2xl'>MOD</span>
                   <span>{ auth.is_mod ? '\u2705' : '\u274C' }</span>
               </div>
-        <div className={`${auth.is_teacher ? 'hidden' : ''} flex justify-center m-1`}>
-          <button className='px-2 py-3 rounded-full bg-green-400 hover:opacity-90'>Be A Creator</button>
+        <div className={`${(auth.is_teacher === true || auth.is_teacher === 'requested') ? 'hidden' : ''} flex justify-center m-1`}>
+          <Link to='/request/upgrade/to/mod'>
+          <button className='px-2 py-3 rounded-full bg-green-400 hover:opacity-90'>
+            Be A Creator
+            </button>
+            </Link>
         </div>
       </div>
           <div className='flex flex-col p-5 border-4 border-black'>
@@ -70,8 +75,8 @@ export const MyInfo = () => {
                     })
                   }
           </div>
-          </div>
-        </div>
+      </div>
+    </div>
   )
 }
 
@@ -79,3 +84,14 @@ const getYear = (date) => {
   const myDate = new Date(date)
   return 'Member Since ' + myDate.getFullYear()
 }
+
+const generateApprDingBats = () => {
+  const { auth } = useContext(AuthContext)
+  if (auth.is_teacher === 'requested') {
+    return '\u25D4'
+  } else if (auth.is_teacher === true) {
+    return '\u2705'
+  }
+  return '\u274C'
+}
+export default MyInfo

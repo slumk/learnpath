@@ -62,7 +62,7 @@ const reportCapsule = async (capsuleId) => {
 }
 
 export const CapsuleGrid = ({ capsule }) => {
-  const value = useContext(AuthContext)
+  const { auth } = useContext(AuthContext)
   const [isUpvoted, setUpvoteStatus] = useState(false)
   const [upvoteCount, setUpvoteCount] = useState(capsule.upvote_count)
   const [isBookmarked, setBookmarkStatus] = useState(false)
@@ -75,7 +75,7 @@ export const CapsuleGrid = ({ capsule }) => {
       <div className='flex'>
           <img src={!isUpvoted ? likeIcon : likedIcon}
             onClick = {
-              value.auth
+              auth
                 ? async (e) => {
                   if (isUpvoted) {
                     setUpvoteStatus(false)
@@ -98,9 +98,9 @@ export const CapsuleGrid = ({ capsule }) => {
         <span className='mx-0.5'>{upvoteCount}</span>
       </div>
         <div className='flex justify-end gap-1'>
-          <img src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
+          <img className={auth.isLoggedin ? '' : 'hidden'} src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
             onClick= {
-              value.auth
+              auth
                 ? async (e) => {
                   if (isBookmarked) {
                     if (await removeBookmark(capsule._id)) {
