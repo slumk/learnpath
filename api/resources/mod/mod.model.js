@@ -11,11 +11,6 @@ const modSchema = new mongoose.Schema(
 			required: true,
 			enum: [ 'M', 'F', 'Trans', 'Other' ]
 		},
-		region: {
-			type: String,
-			required: true,
-			enum: ['Asia Pacific', 'Americas', 'Europe', 'Middle East']
-		},
 		age: {
 			type: Number,
 			required: true

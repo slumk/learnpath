@@ -16,24 +16,11 @@ export const protectForMod = async (req, res, next) => {
 	if (is_mod.toString()) {
 		req.user_id = await payload.gotcha.user_id
 		req.mod_id = await is_mod[0]._id
-		console.log('attached andis with req')
 		return next()
 	}
 	return res.status(401).end()
 	
 }
-
-// export const protectForAdmin = async (req, res, next) => {
-// 	const token = await req.cookies.key.user_token
-// 	if (!token) {
-// 		return res.status(401).end()
-// 	}
-// 	const payload = await decipherToken(token)
-// 	if (!payload) {
-// 		return res.status(401).end()
-// 	}
-// 	next()
-// }
 
 export const protectForLearner = async (req, res, next) => {
 	try {

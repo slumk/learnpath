@@ -16,7 +16,7 @@ const learnerSchema = new mongoose.Schema(
 		},
 		gender: {
 			type: String,
-			enum: ['M', 'F', 'Trans','Others']
+			enum: ['M', 'F','Others']
 		},
 		password: {
 			type: String,
