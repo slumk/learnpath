@@ -4,7 +4,7 @@ import { AuthContext } from '../../App'
 import LoginIcon from '../../icons/login.png'
 import { handleSubmit } from './loginSubmit'
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const { setAuth } = useContext(AuthContext)
   const navigate = useNavigate()
   document.title = 'LearnPath - Login'
@@ -51,3 +51,4 @@ export const LoginPage = () => {
         </div>
   )
 }
+export default LoginPage

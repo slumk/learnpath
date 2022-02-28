@@ -4,7 +4,7 @@ import { AuthContext } from '../../App'
 import './custom_fonts.css'
 import userIcon from '../../icons/user.png'
 
-export const NavBarComponent = (props) => {
+const NavBarComponent = (props) => {
   const { auth } = useContext(AuthContext)
   const navigate = useNavigate()
   const [clicked, setClickStatus] = useState(false)
@@ -35,12 +35,12 @@ export const NavBarComponent = (props) => {
                     </button>
         </form>
         <div className=' self-center'>
+          <Link to='/login'>
           <button className={`${clicked ? 'hidden' : ''} ${auth.isLoggedin ? 'hidden' : ''} is rounded-full text-3xl px-4 py-2 mx-1.5 bg-green-200 hover:bg-red-500`}
           onClick={(e) => setClickStatus(true)}>
-          <Link to='/login'>
             Login
-            </Link>
             </button>
+            </Link>
         </div>
         <div className=' self-center'>
           <Link to='/my/info'>
@@ -56,3 +56,4 @@ export const NavBarComponent = (props) => {
       </div>
   )
 }
+export default NavBarComponent

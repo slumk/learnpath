@@ -7,23 +7,34 @@ import reportIcon from '../../icons/report.png'
 import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
 import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
+import refreshIcon from '../../icons/refresh.png'
 // import dangerIcon from '../../icons/danger.png'
 import './custom_fonts.css'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 // import { FetchCapsuleInfo } from './fetchCapsuleInfo'
 
-export const FetchCapsules = () => {
+const FetchCapsules = () => {
   const [capsules, setCapsules] = useState([])
+  const [refresh, wannaRefresh] = useState(false)
   useEffect(async () => {
     const gotCapsules = await fetchCapsules()
     setCapsules(gotCapsules)
-  }, [])
+    wannaRefresh(false)
+  }, [refresh])
   return (
+    <div>
+      <div className='flex justify-center pt-2'>
+        <img src={refreshIcon}
+          width="40px" height="40px"
+          className={refresh ? 'animate-spin' : ''}
+          onClick={(e) => wannaRefresh(true) }/>
+    </div>
     <div className='container my-3 mx-auto grid grid-cols-5 gap-3'>
       {capsules.map((item) => (
             <CapsuleGrid key={item._id} capsule={item} />
       ))}
-    </div>
+      </div>
+      </div>
   )
 }
 
@@ -115,3 +126,4 @@ export const CapsuleGrid = ({ capsule }) => {
         </div>
     </div>)
 }
+export default FetchCapsules

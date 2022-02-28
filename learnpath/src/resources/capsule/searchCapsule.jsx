@@ -50,7 +50,7 @@ const searchCapsuleReducer = (state, action) => {
   }
 }
 
-export const SearchCapsule = () => {
+const SearchCapsule = () => {
   const { name } = useParams()
   const [searchState, dispatch] = useReducer(searchCapsuleReducer, searchingState)
   useEffect(async () => {
@@ -78,3 +78,4 @@ export const SearchCapsule = () => {
       </div>
   )
 }
+export default SearchCapsule
