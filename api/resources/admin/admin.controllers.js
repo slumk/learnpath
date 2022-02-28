@@ -24,7 +24,7 @@ export const banUser = async (teacher_id) => {
 
 export const fetchAllLearners = async () => {
 	try {
-		const learners = await learnerModel.find().select('name email region')
+		const learners = await learnerModel.find()
 		if (learners) {
 			return { data: learners }
 		}
