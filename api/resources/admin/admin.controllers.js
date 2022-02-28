@@ -2,9 +2,14 @@ import { modModel } from '../mod/mod.model.js'
 import { learnerModel } from '../learner/learner.model.js'
 import { teacherModel } from '../teacher/teacher.model.js'
 
-export const addMod = async (data_about_mod) => {
+export const addMod = async (learner_id) => {
 	try {
-		await modModel.create({ ...data_about_mod })
+		const learner = await learnerModel.findById(learner_id).lean()
+		await modModel.create({
+			learner_id: learner._id,
+			gender: learner.gender,
+			age: learner.age
+		})
 		return true
 	} catch (error) {
 		console.error(error)
