@@ -10,7 +10,9 @@ export const createLearner = async (state) => {
     name: fullName,
     age: age,
     email: email,
-    password: password2
+    password: password2,
+    gender: state.gender,
+    region: state.region
   }
   const isLearnerCreated = await fetch('/api/user/create/account',
     {
@@ -23,5 +25,5 @@ export const createLearner = async (state) => {
   if (await isLearnerCreated.status === 202) {
     return [true, 'Successfully Created']
   }
-  return false
+  return [false, 'Try Again']
 }

@@ -2,6 +2,8 @@ export const initialData = {
   fullName: '',
   age: '',
   email: '',
+  region: '',
+  gender: '',
   password1: '',
   password2: ''
 }
@@ -11,6 +13,10 @@ export const formReducer = (state, action) => {
     case 'SET_FULL_NAME':
       return { ...state, ...action }
     case 'SET_AGE':
+      return { ...state, ...action }
+    case 'SET_GENDER':
+      return { ...state, ...action }
+    case 'SET_REGION':
       return { ...state, ...action }
     case 'SET_EMAIL':
       return { ...state, ...action }

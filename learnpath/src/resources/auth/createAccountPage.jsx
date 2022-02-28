@@ -11,10 +11,10 @@ const CreateLearner = () => {
   const [state, dispatch] = useReducer(formReducer, initialData)
   return (
     <div className="bg-gradient-to-r from-sky-300 h-screen">
-        <div className="grid pt-5">
-        <div className="grid justify-center mt-2">
+        <div className="grid">
+        <div className="grid justify-center mt-0.5">
           <img src={SignUpIcon} width="150px" height="150px" className='mx-auto'/>
-          <form className="flex flex-col gap-1 mt-3"
+          <form className="flex flex-col gap-2 mt-3"
             onSubmit={
               async (e) => {
                 e.preventDefault()
@@ -43,7 +43,7 @@ const CreateLearner = () => {
                     })
                   }
               }/>
-              </div>
+            </div>
             <input type='text' placeholder="Enter Your Email" name="learner-email" className="rounded-lg p-1 w-96 border-4"
             onChange={
               (e) => {
@@ -53,6 +53,45 @@ const CreateLearner = () => {
                 })
               }
           }/>
+            <div className='flex flex-row gap-0.5'>
+              <span className='self-center pr-2'>Region</span>
+              <select className='p-2 bg-white rounded-full w-44'
+                onChange={(e) => {
+                  dispatch({
+                    type: 'SET_REGION',
+                    region: e.target.value
+                  })
+                }}>
+                <option>Asia Pacific</option>
+                <option>Americas</option>
+                <option>Europe</option>
+                <option>Middle East</option>
+              </select>
+              <input type='radio' className='ml-2' name='gender' value='M'
+              onChange={(e) => {
+                dispatch({
+                  type: 'SET_GENDER',
+                  gender: e.target.value
+                })
+              }}/>
+              <span className='self-center'>M</span>
+              <input type='radio' className='ml-2' name='gender' value='F'
+              onChange={(e) => {
+                dispatch({
+                  type: 'SET_GENDER',
+                  gender: e.target.value
+                })
+              }}/>
+              <span className='self-center'>F</span>
+              <input type='radio' className='ml-2' name='gender' value='Other'
+              onChange={(e) => {
+                dispatch({
+                  type: 'SET_GENDER',
+                  gender: e.target.value
+                })
+              }}/>
+              <span className='self-center'>Others</span>
+            </div>
             <input type='password' placeholder="Enter Your Password" name='pass1' className="rounded-lg p-1 w-96 border-4"
             onChange={
               (e) => {
