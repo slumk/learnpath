@@ -6,6 +6,7 @@ import modRouter from './resources/mod/mod.router.js'
 import teacherRouter from './resources/teacher/teacher.router.js'
 import { Router } from 'express'
 import authRouter from './utils/auth/learner.auth.router.js'
+import adminAuthRouter from './utils/admin_auth/admin.auth.router.js'
 
 const apiRouter = Router()
 //Registred Routes
@@ -17,6 +18,7 @@ apiRouter.use('/mod', modRouter)
 apiRouter.use('/boss', adminRouter)
 apiRouter.use('/teacher', teacherRouter)
 apiRouter.use('/user', authRouter)
+apiRouter.use('/admin', adminAuthRouter)
 
 
 export default apiRouter
