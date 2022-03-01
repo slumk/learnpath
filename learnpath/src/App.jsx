@@ -12,7 +12,7 @@ const initialAuthData = {
 }
 
 const initialGodData = {
-  isGodHere: true
+  isGodHere: false
 }
 
 export const App = () => {
