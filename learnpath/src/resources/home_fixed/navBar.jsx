@@ -1,18 +1,19 @@
 import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { AuthContext } from '../../App'
+import { AuthContext, GodContext } from '../../App'
 import './custom_fonts.css'
 import userIcon from '../../icons/user.png'
 
 const NavBarComponent = (props) => {
   const { auth } = useContext(AuthContext)
+  const { god } = useContext(GodContext)
   const navigate = useNavigate()
   const [clicked, setClickStatus] = useState(false)
   useEffect(() => {
     setClickStatus(false)
   }, [auth])
   return (
-    <div className='bg-gradient-to-r from-sky-300 grid grid-cols-2'>
+    <div className='bg-gradient-to-r from-sky-300 grid lg:grid-cols-2'>
             <div className=" m-2 px-1 py-1.5">
             <Link to='/' onClick={(e) => setClickStatus(false)}>
               <h1 className="px-2 text-7xl font-semibold" id="main-heading">
@@ -36,7 +37,7 @@ const NavBarComponent = (props) => {
         </form>
         <div className=' self-center'>
           <Link to='/login'>
-          <button className={`${clicked ? 'hidden' : ''} ${auth.isLoggedin ? 'hidden' : ''} is rounded-full text-3xl px-4 py-2 mx-1.5 bg-green-200 hover:bg-red-500`}
+          <button className={`${clicked ? 'hidden' : ''} ${auth.isLoggedin ? 'hidden' : ''} ${god.isGodHere ? 'hidden' : ''} is rounded-full text-3xl px-4 py-2 mx-1.5 bg-green-200 hover:bg-red-500`}
           onClick={(e) => setClickStatus(true)}>
             Login
             </button>

@@ -8,6 +8,8 @@ import MyInfo from '../learner/learnerInfo'
 import UpgradeRequest from '../learner/upgradeRequest'
 import ProtectLearnerRoute from '../utils/protectRoute'
 import ProtectRouteForMod from '../utils/protectModRoute'
+import { ProtectRouteForGod } from '../utils/protectAdminRoute'
+import AdminDashboard from '../admin/adminDashboard'
 // import { FooterPage } from './footerPage'
 
 export const MainPageComponent = () => {
@@ -17,6 +19,8 @@ export const MainPageComponent = () => {
     <Routes>
       <Route path='/' element={<FetchCapsules />} />
         <Route path='/search/:name' element={<SearchCapsule />} />
+        <Route path='/god/getin' element={<ProtectRouteForGod><AdminDashboard /></ProtectRouteForGod>} />
+        <Route path='/admin/dashboard/*' element={<ProtectRouteForGod><AdminDashboard /></ProtectRouteForGod>} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/create/account' element={<CreateLearner />} />
         <Route path='/capsule/:capsuleId' element={<FetchCapsuleInfo />} />
