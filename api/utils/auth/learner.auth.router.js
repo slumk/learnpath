@@ -4,8 +4,8 @@ import { createLearner, loginLearner } from './learner.auth.controller.js'
 const authRouter = Router()
 
 authRouter.post('/create/account', async (req, res) => {
-	const { name, email, password, age } = req.body
-	const token = await createLearner(name, email, password, age)
+	const { name, email, password, age, gender, region } = req.body
+	const token = await createLearner(name, email, password, age, gender, region)
 	if (token) {
 		return res.status(202).end()
 	}

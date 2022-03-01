@@ -21,7 +21,7 @@ export const loginLearner = async (learner_email, password) => {
 	}
 }
 
-export const createLearner = async (learner_name, learner_email, password, age) => {
+export const createLearner = async (learner_name, learner_email, password, age, gender, region) => {
 	try {
 		const password_hash = await bcrypt.hash(password, 10)
 			.then((hash) => {
@@ -32,7 +32,9 @@ export const createLearner = async (learner_name, learner_email, password, age) 
 				name : learner_name,
 				email : learner_email,
 				password: password_hash,
-				age: age
+				age: age,
+				gender: gender,
+				region: region
 			})
 		return true
 	}
