@@ -6,6 +6,15 @@ const modSchema = new mongoose.Schema(
 			ref: 'Learner',
 			required: true
 		},
+		email: {
+			type: String,
+			required: true,
+			unique: true
+		},
+		name: {
+			type: String,
+			required: true
+		},
 		gender: {
 			type: String,
 			required: true,

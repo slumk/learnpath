@@ -47,6 +47,10 @@ const learnerSchema = new mongoose.Schema(
 			type: [mongoose.Types.ObjectId],
 			ref: 'Capsule'			
 		},
+		is_mod: {
+			type: Boolean,
+			default: false
+		},
 		enrolled_courses: {
 			type: [mongoose.Types.ObjectId],
 			ref: 'Course'
