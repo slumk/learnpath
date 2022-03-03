@@ -11,7 +11,7 @@ modRouter.get('/fetch/pending/teachers', async (req, res) => {
 	if (!pendingTeachers) {
 		return res.status(404).end()
 	}
-	return res.status(200).json( { data: pendingTeachers } ).end()
+	return res.status(200).json(pendingTeachers).end()
 })
 
 modRouter.get('/fetch/pending/capsules', async (req, res) => {
@@ -19,7 +19,7 @@ modRouter.get('/fetch/pending/capsules', async (req, res) => {
 	if (!pendingCapsules) {
 		return res.status(404).end()
 	}
-	return res.status(200).json( { data: pendingCapsules } ).end()
+	return res.status(200).json(pendingCapsules).end()
 })
 
 modRouter.get('/fetch/pending/courses', async (req, res) => {
@@ -27,7 +27,7 @@ modRouter.get('/fetch/pending/courses', async (req, res) => {
 	if (!pendingCourses) {
 		return res.status(404).end()
 	}
-	return res.status(200).json( { data: pendingCourses } ).end()
+	return res.status(200).json(pendingCourses).end()
 })
 
 modRouter.put('/approve/capsule/:id', async (req, res) => {

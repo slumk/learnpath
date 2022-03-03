@@ -11,9 +11,9 @@ const fetchPending = async (model) => {
 		return false
 	}
 }
-export const fetchPendingTeachers = async () => ( await fetchPending(teacherModel))
-export const fetchPendingCapsules = async () => ( await fetchPending(capsuleModel))
-export const fetchPendingCourses = async () => ( await fetchPending(courseModel))
+export const fetchPendingTeachers = async () =>  await fetchPending(teacherModel)
+export const fetchPendingCapsules = async () =>  await fetchPending(capsuleModel)
+export const fetchPendingCourses = async () =>  await fetchPending(courseModel)
 
 // Need to apply some DRY here
 
