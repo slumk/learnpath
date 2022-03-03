@@ -19,7 +19,7 @@ export const validateEntries = (entries) => {
   }
   if (entries.password1 === entries.password2) {
     if (!(passExp.test(entries.password1))) {
-      return 'Password Don\t Meet Requirements'
+      return 'Password Don\'t Meet Requirements'
     }
   }
   if (!(emailExp.test(entries.email))) {

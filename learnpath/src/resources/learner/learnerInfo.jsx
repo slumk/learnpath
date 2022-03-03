@@ -7,6 +7,7 @@ import { AuthContext } from '../../App'
 import { checkRelations } from './checkLearner'
 import { logoutUser } from '../auth/logOut'
 import { Link, useNavigate } from 'react-router-dom'
+import ModPage from '../mod/modPage'
 
 const MyInfo = () => {
   const { auth, setAuth } = useContext(AuthContext)
@@ -53,7 +54,7 @@ const MyInfo = () => {
                   <span className='font-bold text-2xl'>MOD</span>
                   <span>{ auth.is_mod ? '\u2705' : '\u274C' }</span>
               </div>
-        <div className={`${(auth.is_teacher === true || auth.is_teacher === 'requested') ? 'hidden' : ''} flex justify-center m-1`}>
+        <div className={`${(auth.is_teacher === true || auth.is_teacher === 'requested' || auth.is_mod) ? 'hidden' : ''} flex justify-center m-1`}>
           <Link to='/request/upgrade/to/mod'>
           <button className='px-2 py-3 rounded-full bg-green-400 hover:opacity-90'>
             Be A Creator
@@ -61,6 +62,7 @@ const MyInfo = () => {
             </Link>
         </div>
       </div>
+      {auth.is_mod ? <ModPage /> : null}
           <div className='flex flex-col p-5 border-4 border-black'>
               <h1 className='text-3xl underline'>
                   Bookmarked Capsules

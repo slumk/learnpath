@@ -24,7 +24,7 @@ export const MainPageComponent = () => {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/create/account' element={<CreateLearner />} />
         <Route path='/capsule/:capsuleId' element={<FetchCapsuleInfo />} />
-        <Route path='/my/info/' element={<ProtectLearnerRoute><MyInfo /></ProtectLearnerRoute>} />
+        <Route path='/my/info/*' element={<ProtectLearnerRoute><MyInfo /></ProtectLearnerRoute>} />
         <Route path='/request/upgrade/to/mod' element={<ProtectLearnerRoute><UpgradeRequest /></ProtectLearnerRoute>} />
         <Route path='/mod' element={<ProtectRouteForMod></ProtectRouteForMod>}/>
       </Routes>
