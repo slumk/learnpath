@@ -6,3 +6,4 @@ learnpath/node_modules
 learnpath/.parcel-cache
 learnpath/dist
 .vscode/
+api/resources/admin/scripts/*
