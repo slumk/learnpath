@@ -6,6 +6,7 @@ import { handleSubmit } from './loginSubmit'
 
 const LoginPage = () => {
   const { setAuth } = useContext(AuthContext)
+  const [error, setError] = useState('')
   const navigate = useNavigate()
   document.title = 'LearnPath - Login'
   const [email, setEmail] = useState('')
@@ -21,8 +22,9 @@ const LoginPage = () => {
               setAuth((prevAuthStatus) => {
                 return { ...prevAuthStatus, ...{ isLoggedin: true } }
               })
-              navigate('/')
+              return navigate('/')
             }
+            setError('Check Username And Password Again')
           }}>
             <input type='text'
               placeholder="Enter Your Email"
@@ -37,14 +39,15 @@ const LoginPage = () => {
               className="rounded-lg p-1 w-96 border-4"
               onChange={
                 (e) => setPassword(e.target.value)
-              }/>
+              } />
+            <span className='mx-auto italic'>{ error || '' }</span>
             <button className="rounded-full mt-5 w-96 text-xl py-2 bg-red-500 hover:bg-red-400"
             type='submit'>
                 Login
               </button>
               <Link to='/create/account' className=' self-center'>
                 <span className="text-indigo-500 underline">Create Account</span>
-              </Link>
+            </Link>
             </form>
         </div>
         </div>
