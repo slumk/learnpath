@@ -12,6 +12,20 @@ export const createCapsule = async (req) => {
 	}
 }
 
+export const fetchOwnReportedCapsules = async (teacher_id) => {
+	try {
+		const ownReportedCapsules = await capsuleModel.find({
+			created_by: teacher_id,
+		}).gt('report_count', 3)
+		if (ownReportedCapsules.toString()) {
+			return ownReportedCapsules
+		}
+		return false
+	} catch (error) {
+		return false
+	}
+}
+
 export const deleteCapsule = async (capsule_id) => {
 	try {
 		await capsuleModel.findByIdAndDelete(capsule_id)
@@ -38,6 +52,16 @@ export const deleteCourse = async (course_id) => {
 	try {
 		await courseModel.findByIdAndDelete(course_id)
 		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+
+export const fetchOwnCapsules = async (teacher_id) => {
+	try {
+		const ownCapsules = await capsuleModel.find({ created_by: teacher_id })
+		return { data: ownCapsules }
 	} catch (error) {
 		console.error(error)
 		return false
