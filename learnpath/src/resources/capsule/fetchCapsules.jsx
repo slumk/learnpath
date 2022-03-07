@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react' // use useContext
 import { Link, useNavigate } from 'react-router-dom'
-import { AuthContext } from '../../App'
+import { AuthContext, GodContext } from '../../App'
 import likeIcon from '../../icons/like.png'
 import likedIcon from '../../icons/liked.png'
 import reportIcon from '../../icons/report.png'
@@ -14,9 +14,11 @@ import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 // import { FetchCapsuleInfo } from './fetchCapsuleInfo'
 
 const FetchCapsules = () => {
+  const { god, setGodPlace } = useContext(GodContext)
   const [capsules, setCapsules] = useState([])
   const [refresh, wannaRefresh] = useState(false)
   useEffect(async () => {
+    setGodPlace({ ...god, ...{ isGodHere: false } })
     const gotCapsules = await fetchCapsules()
     setCapsules(gotCapsules)
     wannaRefresh(false)

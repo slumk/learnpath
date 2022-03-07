@@ -7,7 +7,6 @@ import SearchCapsule from '../capsule/searchCapsule'
 import MyInfo from '../learner/learnerInfo'
 import UpgradeRequest from '../learner/upgradeRequest'
 import ProtectLearnerRoute from '../utils/protectRoute'
-import ProtectRouteForMod from '../utils/protectModRoute'
 import { ProtectRouteForGod } from '../utils/protectAdminRoute'
 import AdminDashboard from '../admin/adminDashboard'
 // import { FooterPage } from './footerPage'
@@ -26,7 +25,6 @@ export const MainPageComponent = () => {
         <Route path='/capsule/:capsuleId' element={<FetchCapsuleInfo />} />
         <Route path='/my/info/*' element={<ProtectLearnerRoute><MyInfo /></ProtectLearnerRoute>} />
         <Route path='/request/upgrade/to/mod' element={<ProtectLearnerRoute><UpgradeRequest /></ProtectLearnerRoute>} />
-        <Route path='/mod' element={<ProtectRouteForMod></ProtectRouteForMod>}/>
       </Routes>
     {/* <FooterPage /> */}
     </div>

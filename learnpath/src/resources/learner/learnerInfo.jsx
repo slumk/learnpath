@@ -8,6 +8,7 @@ import { checkRelations } from './checkLearner'
 import { logoutUser } from '../auth/logOut'
 import { Link, useNavigate } from 'react-router-dom'
 import ModPage from '../mod/modPage'
+import TeacherMenu from '../teacher/teacherPage'
 
 const MyInfo = () => {
   const { auth, setAuth } = useContext(AuthContext)
@@ -15,13 +16,13 @@ const MyInfo = () => {
   const [loading, setLoading] = useState(true)
   const [userInfo, setUserInfo] = useState({})
   useEffect(async () => {
-    document.title = userInfo.name + ' - My Profile'
+    document.title = userInfo.name + ' - ' + 'My Profile'
     const learnerInfo = await fetchLearnerInfo()
     setUserInfo(learnerInfo)
     setLoading(false)
     const learnerRelations = await checkRelations()
     setAuth({ ...auth, ...learnerRelations })
-  }, [])
+  }, [userInfo.name])
   return (
       <div className='container mx-auto flex flex-col lg:gap-8'>
           <div className=' flex flex-col gap-1'>
@@ -63,6 +64,7 @@ const MyInfo = () => {
         </div>
       </div>
       {auth.is_mod ? <ModPage /> : null}
+      {auth.is_teacher ? <TeacherMenu /> : null}
           <div className='flex flex-col p-5 border-4 border-black'>
               <h1 className='text-3xl underline'>
                   Bookmarked Capsules
