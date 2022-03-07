@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import capsuleImage from '../../icons/capsule-black.png'
 import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
+import { deleteOwnCapsule } from './deleteOwnCapsule'
 const MyCapsuleGrid = ({ capsule }) => {
+  const [isDeleted, updateDeletionStatus] = useState(false)
   return (
       <div className="container mx-auto">
           <div className="flex p-3 gap-4">
@@ -13,7 +16,16 @@ const MyCapsuleGrid = ({ capsule }) => {
               </div>
               <span className='self-center'>{capsule.is_approved ? 'Approved \u2705' : 'Not Approved \u274C'}</span>
               <div className='self-center px-5'>
-                  <button className='bg-green-300 hover:bg-green-500 border-2 border-black rounded-lg p-1'>Delete Capsule</button>
+                  <button
+                      disabled = { !!isDeleted }
+                      className='bg-green-300 hover:bg-green-500 border-2 border-black rounded-lg p-1'
+                      onClick={async (e) => {
+                        if (await deleteOwnCapsule(capsule._id)) {
+                          return updateDeletionStatus(true)
+                        }
+                      } }>
+                      { isDeleted ? 'Deleted' : 'Delete Capsule' }
+                  </button>
               </div>
           </div>
         </div>
