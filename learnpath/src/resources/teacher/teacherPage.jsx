@@ -22,14 +22,14 @@ const TeacherMenu = () => {
                       <span className='font-medium'>View My Capsules</span>
                   </div>
                   <div className='flex flex-col'>
-                      <Link to='/my/reported/capsules'><img src={reportIcon} className='mx-auto' width='64px' height='64px'/></Link>
+                      <Link to='reported/own/capsules'><img src={reportIcon} className='mx-auto' width='64px' height='64px'/></Link>
                       <span className='font-medium'>Reported Capsules</span>
                       </div>
               </div>
               <Routes>
                   <Route path='create/capsule' element={<CreateCapsule />} />
                   <Route path='uploaded/content' element={<Modal><MyCapsules /></Modal>} />
-                  <Route path='my/reported/capsules' element={<Modal><ReportedCapsules /></Modal>} />
+                  <Route path='reported/own/capsules' element={<ReportedCapsules />} />
               </Routes>
               </div>
       </div>
