@@ -5,6 +5,7 @@ import Modal from '../utils/modal'
 import UpgradeToMod from './upgradeToMod'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import ManageMods from './manageMods'
+import BanTeachers from './banTeachers'
 const AdminDashboard = () => {
   const navigate = useNavigate()
   return (
@@ -29,12 +30,16 @@ const AdminDashboard = () => {
               </div>
               <div className='grid justify-center'>
                   <img src={banPhoto} width='350px' height='350px'/>
-                  <button className="bg-green-500 hover:shadow-2xl px-1 py-3 rounded-full">Ban Teacher</button>
+                  <button className="bg-green-500 hover:shadow-2xl px-1 py-3 rounded-full"
+                  onClick={(e) => navigate('ban/teachers')}>
+                      Ban Teacher
+                  </button>
                   </div>
           </div>
           <Routes>
               <Route path='upgrade/to/mods' element={<Modal><UpgradeToMod /></Modal>} />
               <Route path='manage/mods/all' element={<Modal><ManageMods /></Modal>} />
+              <Route path='ban/teachers' element={<Modal><BanTeachers /></Modal>} />
               </Routes>
         </div>
   )
