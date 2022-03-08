@@ -34,9 +34,10 @@ export const requestAccountDeletion = async (learner_id) => {
 	}
 }
 
-export const upvoteCapsule = async (capsule_id) => {
+export const upvoteCapsule = async (user_id, capsule_id) => {
 	try {
 		await capsuleModel.findByIdAndUpdate(capsule_id, { $inc: { upvote_count: 1 } })
+		await learnerModel.findByIdAndUpdate(user_id, { $addToSet: { upvoted_capsules: capsule_id } })
 		return true
 	} catch (error) {
 		console.error(error)
@@ -44,9 +45,10 @@ export const upvoteCapsule = async (capsule_id) => {
 	}
 }
 
-export const minusUpvoteCapsule = async (capsule_id) => {
+export const minusUpvoteCapsule = async (user_id ,capsule_id) => {
 	try {
 		await capsuleModel.findByIdAndUpdate(capsule_id, { $inc: { upvote_count: -1 } })
+		await learnerModel.findByIdAndUpdate(user_id, { $pull: { upvoted_capsules: capsule_id } })
 		return true
 	} catch (error) {
 		console.error(error)

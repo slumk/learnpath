@@ -6,7 +6,7 @@ const learnerRouter = Router()
 learnerRouter.use( async (req, res, next) => ( protectForLearner(req, res, next) ))
 
 learnerRouter.put('/upvote/:id', async (req, res) => {
-	const status = await upvoteCapsule(req.params.id)
+	const status = await upvoteCapsule(req.user_id ,req.params.id)
 	if (!status) {
 		return res.status(400).end()
 	}
@@ -14,7 +14,7 @@ learnerRouter.put('/upvote/:id', async (req, res) => {
 })
 
 learnerRouter.put('/upvote/minus/:id', async (req, res) => {
-	const status = await minusUpvoteCapsule(req.params.id)
+	const status = await minusUpvoteCapsule(req.user_id ,req.params.id)
 	if (!status) {
 		return res.status(400).end()
 	}
