@@ -29,7 +29,10 @@ const MyInfo = () => {
         <img src={userIcon} className='mx-auto' />
         <button className='w-30 mx-auto text-xl p-2 border-2' onClick = {(e) => {
           if (logoutUser()) {
-            setAuth({ ...auth, ...{ isLoggedin: false, is_mod: false, is_teacher: false, is_god: false } })
+            setAuth({
+              ...auth,
+              ...{ isLoggedin: false, is_mod: false, is_teacher: false, is_god: false, learner_bookmarks: [], learner_upvoted_capsules: [] }
+            })
             navigate('/')
           }
         }}>
@@ -64,7 +67,7 @@ const MyInfo = () => {
         </div>
       </div>
       {auth.is_mod ? <ModPage /> : null}
-      {auth.is_teacher ? <TeacherMenu /> : null}
+      {(auth.is_teacher !== 'requested') ? <TeacherMenu /> : null}
           <div className='flex flex-col p-5 border-4 border-black'>
               <h1 className='text-3xl underline'>
                   Bookmarked Capsules

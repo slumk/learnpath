@@ -8,7 +8,9 @@ export const GodContext = createContext() // Admin is god here
 const initialAuthData = {
   isLoggedin: false,
   is_teacher: false,
-  is_mod: false
+  is_mod: false,
+  learner_bookmarks: [],
+  learner_upvoted_capsules: []
 }
 
 const initialGodData = {

@@ -11,17 +11,27 @@ import refreshIcon from '../../icons/refresh.png'
 // import dangerIcon from '../../icons/danger.png'
 import './custom_fonts.css'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
+import { chopBookmarksAndUpvoted } from '../learner/fetchLearnerInfo'
 // import { FetchCapsuleInfo } from './fetchCapsuleInfo'
 
 const FetchCapsules = () => {
   const { god, setGodPlace } = useContext(GodContext)
+  const { auth, setAuth } = useContext(AuthContext)
   const [capsules, setCapsules] = useState([])
-  const [refresh, wannaRefresh] = useState(false)
+  const [refresh, setwannaRefresh] = useState(false)
   useEffect(async () => {
     setGodPlace({ ...god, ...{ isGodHere: false } })
     const gotCapsules = await fetchCapsules()
     setCapsules(gotCapsules)
-    wannaRefresh(false)
+    setwannaRefresh(false)
+    const bookmarkAndUpvoted = await chopBookmarksAndUpvoted()
+    setAuth({
+      ...auth,
+      ...{
+        learner_bookmarks: await bookmarkAndUpvoted[0],
+        learner_upvoted_capsules: await bookmarkAndUpvoted[1]
+      }
+    })
   }, [refresh])
   return (
     <div>
@@ -29,11 +39,11 @@ const FetchCapsules = () => {
         <img src={refreshIcon}
           width="40px" height="40px"
           className={refresh ? 'animate-spin' : ''}
-          onClick={(e) => wannaRefresh(true) }/>
+          onClick={(e) => setwannaRefresh(true) }/>
     </div>
     <div className='container my-3 mx-auto grid grid-cols-5 gap-3'>
       {capsules.map((item) => (
-            <CapsuleGrid key={item._id} capsule={item} />
+        <CapsuleGrid key={item._id} capsule={item} />
       ))}
       </div>
       </div>
@@ -69,6 +79,22 @@ export const CapsuleGrid = ({ capsule }) => {
   const [upvoteCount, setUpvoteCount] = useState(capsule.upvote_count)
   const [isBookmarked, setBookmarkStatus] = useState(false)
   const navigate = useNavigate()
+  useEffect(async () => {
+    try {
+      await (auth.learner_bookmarks).forEach(bookmarkedEndi => {
+        if (bookmarkedEndi === capsule._id) {
+          return setBookmarkStatus(true)
+        }
+      })
+      await (auth.learner_upvoted_capsules).forEach(upvotedEndi => {
+        if (upvotedEndi === capsule._id) {
+          return setUpvoteStatus(true)
+        }
+      })
+    } catch (error) {
+      return null
+    }
+  }, [auth])
   return (
   <div className='justify-center rounded-lg border-slate-900 border-2 cursor-default relative'>
       <Link to={ '/capsule/' + capsule._id }><img src={capsule.yt_thumbnail_url} /></Link>

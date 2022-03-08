@@ -6,3 +6,11 @@ export const fetchLearnerInfo = async () => {
   }
   return {}
 }
+
+export const chopBookmarksAndUpvoted = async () => {
+  let bookmarks = await fetchLearnerInfo()
+  bookmarks = bookmarks.bookmarks
+  let upvoted = await fetchLearnerInfo()
+  upvoted = upvoted.upvoted_capsules
+  return [bookmarks, upvoted]
+}
