@@ -53,3 +53,4 @@ const fetchAllPeople = async (model) => {
 
 export const fetchAllMods = async () => await fetchAllPeople(modModel)
 export const fetchAllLearners = async () => await fetchAllPeople(learnerModel)
+export const fetchAllTeachers = async () => await fetchAllPeople(teacherModel)
