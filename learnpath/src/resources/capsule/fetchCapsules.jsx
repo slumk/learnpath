@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react' // use useContext
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { AuthContext, GodContext } from '../../App'
 import likeIcon from '../../icons/like.png'
 import likedIcon from '../../icons/liked.png'
 import reportIcon from '../../icons/report.png'
-import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
 import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
 import refreshIcon from '../../icons/refresh.png'
@@ -76,9 +75,7 @@ const reportCapsule = async (capsuleId) => {
 export const CapsuleGrid = ({ capsule }) => {
   const { auth } = useContext(AuthContext)
   const [isUpvoted, setUpvoteStatus] = useState(false)
-  const [upvoteCount, setUpvoteCount] = useState(capsule.upvote_count)
   const [isBookmarked, setBookmarkStatus] = useState(false)
-  const navigate = useNavigate()
   useEffect(async () => {
     try {
       await (auth.learner_bookmarks).forEach(bookmarkedEndi => {
@@ -102,28 +99,8 @@ export const CapsuleGrid = ({ capsule }) => {
     <div className='grid grid-cols-2 p-1'>
       <div className='flex'>
           <img src={!isUpvoted ? likeIcon : likedIcon}
-            onClick = {
-              auth
-                ? async (e) => {
-                  if (isUpvoted) {
-                    setUpvoteStatus(false)
-                    if (await minusUpvoteCapsule(capsule._id)) {
-                      setUpvoteCount((prevCount) => prevCount - 1)
-                    } else {
-                      navigate('/login')
-                    }
-                  } else {
-                    setUpvoteStatus(true)
-                    if (await upvoteCapsule(capsule._id)) {
-                      setUpvoteCount((prevCount) => prevCount + 1)
-                    } else {
-                      navigate('/login')
-                    }
-                  }
-                }
-                : (e) => e.preventDefault()
-             }/>
-        <span className='mx-0.5'>{upvoteCount}</span>
+            onClick = { (e) => e.preventDefault()}/>
+        <span className='mx-0.5'>{capsule.upvote_count}</span>
       </div>
         <div className='flex justify-end gap-1'>
           <img className={auth.isLoggedin ? '' : 'hidden'} src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
