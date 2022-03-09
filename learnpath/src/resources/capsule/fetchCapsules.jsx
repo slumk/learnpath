@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react' // use useContext
 import { Link } from 'react-router-dom'
 import { AuthContext, GodContext } from '../../App'
-import likeIcon from '../../icons/like.png'
 import likedIcon from '../../icons/liked.png'
 import reportIcon from '../../icons/report.png'
 import bookmarkIcon from '../../icons/bookmark.png'
@@ -74,18 +73,12 @@ const reportCapsule = async (capsuleId) => {
 
 export const CapsuleGrid = ({ capsule }) => {
   const { auth } = useContext(AuthContext)
-  const [isUpvoted, setUpvoteStatus] = useState(false)
   const [isBookmarked, setBookmarkStatus] = useState(false)
   useEffect(async () => {
     try {
       await (auth.learner_bookmarks).forEach(bookmarkedEndi => {
         if (bookmarkedEndi === capsule._id) {
           return setBookmarkStatus(true)
-        }
-      })
-      await (auth.learner_upvoted_capsules).forEach(upvotedEndi => {
-        if (upvotedEndi === capsule._id) {
-          return setUpvoteStatus(true)
         }
       })
     } catch (error) {
@@ -98,7 +91,7 @@ export const CapsuleGrid = ({ capsule }) => {
     <h1 className='"absolute inset-x-0 bottom-0 text-center text-3xl' id='capsule-title'>{capsule.label}</h1>
     <div className='grid grid-cols-2 p-1'>
       <div className='flex'>
-          <img src={!isUpvoted ? likeIcon : likedIcon}
+          <img src={likedIcon}
             onClick = { (e) => e.preventDefault()}/>
         <span className='mx-0.5'>{capsule.upvote_count}</span>
       </div>
