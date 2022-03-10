@@ -1,6 +1,9 @@
 import { useEffect, useReducer } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { buildThumbnailURL } from './fetchCapsules'
+import likedIcon from '../../icons/liked.png'
+import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
+import loadingIcon from '../../icons/loading_big.png'
 
 const searchingState = {
   loading: true,
@@ -12,8 +15,9 @@ const searchingState = {
 const Loading = () => {
   document.title = 'Searching...'
   return (
-    <div>
-      Loading
+    <div className='grid justify-center'>
+      <img src={loadingIcon} width="80px" height="80px" className='mx-auto animate-spin' />
+      <h3 className='font-semibold'>Searching, Please Wait...</h3>
       </div>
   )
 }
@@ -33,11 +37,24 @@ const SearchResults = ({ capsule }) => {
   return (
       <div className='mx-auto mt-2 container flex justify-center'>
         <div className='flex gap-2'>
-        <img src={capsule.yt_thumbnail_url} width="150px" height="200px"/>
-        <h3 className='text-2xl'>{capsule.label}</h3>
-        <span>{capsule.description}</span>
-        </div>
+        <Link to={'/capsule/' + capsule._id}>
+          <img src={capsule.yt_thumbnail_url} width="150px" height="200px" />
+          </Link>
+        <div className='grid'>
+          <div className='flex flex-col'>
+            <Link to={'/capsule/' + capsule._id}>
+              <h3 className='text-2xl font-bold'>{capsule.label}</h3>
+              </Link>
+            <span className='italic text-sm'>{capsule.description}</span>
+            <span className='italic'>Created At {returnHumanizedDateAndTime(capsule.created_date)}</span>
           </div>
+          <div className='flex gap-1'>
+            <img src={likedIcon} width='30px'/>
+          <span className='self-center text-xl font-semibold'>{ capsule.upvote_count }</span>
+          </div>
+          </div>
+      </div>
+      </div>
   )
 }
 
