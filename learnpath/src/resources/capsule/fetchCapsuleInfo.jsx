@@ -36,14 +36,14 @@ const FetchCapsuleInfo = () => {
     setCapsule(await gotCapsule)
     await stripYtId(await gotCapsule.yt_src)
     setUpvoteCount(await gotCapsule.upvote_count)
-    auth.learner_bookmarks.forEach(bookmarkedElement => {
-      if (bookmarkedElement === gotCapsule._id) {
-        setUpvoteStatus(true)
+    auth.learner_bookmarks.forEach(async (bookmarkedElement) => {
+      if (bookmarkedElement === await gotCapsule._id) {
+        setBookmarkStatus(true)
       }
     })
     auth.learner_upvoted_capsules.forEach(upvotedElement => {
       if (upvotedElement === gotCapsule._id) {
-        setBookmarkStatus(true)
+        setUpvoteStatus(true)
       }
     })
   }, [])

@@ -1,12 +1,27 @@
 import { useEffect, useState } from 'react'
 import { fetchCapsuleInfo } from '../capsule/fetchCapsuleInfo'
 import { SearchResults } from '../capsule/searchCapsule'
+import { minusUpvoteCapsule } from './upvoteCapsule'
+import notFoundIcon from '../../icons/nothing-found.png'
 
 const LearnerUpvotedCapsules = ({ upvoted }) => {
   const [loading, setLoading] = useState(true)
   useEffect(async () => {
     setLoading(false)
   }, [upvoted])
+  if (!(upvoted.toString())) {
+    return (
+      <div>
+        <h1 className='text-center text-3xl font-semibold underline p-0'>
+                    Upvoted Capsules
+                </h1>
+        <img src={notFoundIcon} className='mx-auto pt-10' />
+        <h1 className='text-center font-bold'>
+          Nothing Found !
+        </h1>
+      </div>
+    )
+  }
   return (
         <div>
         <h1 className='text-center text-3xl font-semibold underline p-0'>
@@ -26,7 +41,10 @@ const UpvoteGrid = ({ capsuleId }) => {
   const [capsuleInfo, setCapsuleInfo] = useState({})
   useEffect(async () => {
     const capsuleInfo = await fetchCapsuleInfo(capsuleId)
-    setCapsuleInfo(await capsuleInfo)
+    if (!capsuleInfo) {
+      return await minusUpvoteCapsule(capsuleId)
+    }
+    return setCapsuleInfo(await capsuleInfo)
   }, [])
   return (
       <div className='pt-5'>
