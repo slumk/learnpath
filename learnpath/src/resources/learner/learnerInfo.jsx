@@ -9,6 +9,8 @@ import { logoutUser } from '../auth/logOut'
 import { Link, useNavigate } from 'react-router-dom'
 import ModPage from '../mod/modPage'
 import TeacherMenu from '../teacher/teacherPage'
+import LearnerBookmarks from './learnerBookmarks'
+import LearnerUpvotedCapsules from './learnerUpvoted'
 
 const MyInfo = () => {
   const { auth, setAuth } = useContext(AuthContext)
@@ -68,21 +70,10 @@ const MyInfo = () => {
       </div>
       {auth.is_mod ? <ModPage /> : null}
       {(auth.is_teacher !== 'requested') ? <TeacherMenu /> : null}
-          <div className='flex flex-col p-5 border-4 border-black'>
-              <h1 className='text-3xl underline'>
-                  Bookmarked Capsules
-              </h1>
-              <div>
-              { loading
-                ? '...'
-                : (userInfo.bookmarks).map(
-                    (capsuleId) => {
-                    //   fetchCapsuleInfo(capsuleId)
-                      return null
-                    })
-                  }
-          </div>
-      </div>
+      <div className='grid grid-cols-2 divide-x-4 divide-black p-5 border-4 border-black'>
+        <LearnerBookmarks bookmarks={userInfo.bookmarks ? userInfo.bookmarks : []} />
+        <LearnerUpvotedCapsules upvoted={ userInfo.upvoted_capsules ? userInfo.upvoted_capsules : [] }/>
+        </div>
     </div>
   )
 }

@@ -11,7 +11,7 @@ const MyCapsuleGrid = ({ capsule, isReportedCapsules }) => {
               <div className='flex flex-col'>
             <span className='font-bold'>{capsule.label}</span>
             <span className='italic'>Reported {capsule.report_count} Times</span>
-                  <a href={capsule.yt_src} className='italic text-blue-800 underline'>Watch On YouTube  </a>
+                  <a href={capsule.yt_src} rel='noreferrer' target='_blank' className='italic text-blue-800 underline'>Watch On YouTube  </a>
                   <span>{ ` ${returnHumanizedDateAndTime(capsule.created_date)}` }</span>
               </div>
               <div className='self-center px-5'>
@@ -37,7 +37,7 @@ const MyCapsuleGrid = ({ capsule, isReportedCapsules }) => {
               <div className='flex flex-col'>
                   <span className='font-bold'>{capsule.label}</span>
                   <span className='italic text-sm'>{capsule.description}</span>
-                  <a href={'http://' + capsule.yt_src} className='italic text-blue-800 underline'>Watch On YouTube  </a>
+                  <a href={capsule.yt_src} rel='noreferrer' target='_blank' className='italic text-blue-800 underline'>Watch On YouTube  </a>
                   <span>{ `Posted on ${returnHumanizedDateAndTime(capsule.created_date)}` }</span>
               </div>
               <span className='self-center'>{capsule.is_approved ? 'Approved \u2705' : 'Not Approved \u274C'}</span>
