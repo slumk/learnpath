@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { lazy, Suspense, useContext, useEffect, useState } from 'react'
 import { fetchLearnerInfo } from './fetchLearnerInfo'
 import userIcon from '../../icons/infoUser.png'
 import teacherIcon from '../../icons/teacher.png'
@@ -9,8 +9,9 @@ import { logoutUser } from '../auth/logOut'
 import { Link, useNavigate } from 'react-router-dom'
 import ModPage from '../mod/modPage'
 import TeacherMenu from '../teacher/teacherPage'
-import LearnerBookmarks from './learnerBookmarks'
-import LearnerUpvotedCapsules from './learnerUpvoted'
+import FallBackLoader from '../utils/fallbackLoader'
+const LearnerUpvotedCapsules = lazy(() => import('./learnerUpvoted'))
+const LearnerBookmarks = lazy(() => import('./learnerBookmarks'))
 
 const MyInfo = () => {
   const { auth, setAuth } = useContext(AuthContext)
@@ -70,11 +71,11 @@ const MyInfo = () => {
       </div>
       {auth.is_mod ? <ModPage /> : null}
       {(auth.is_teacher !== 'requested') ? <TeacherMenu /> : null}
-      <div className='grid grid-cols-2 divide-x-4 divide-black p-5 border-4 border-black'>
-        <LearnerBookmarks bookmarks={userInfo.bookmarks ? userInfo.bookmarks : []} />
-        <LearnerUpvotedCapsules upvoted={ userInfo.upvoted_capsules ? userInfo.upvoted_capsules : [] }/>
-        </div>
-    </div>
+      <div className='grid grid-cols-2 rounded-md divide-x-4 divide-black p-5 border-2 border-black'>
+        <Suspense fallback={<FallBackLoader />}><LearnerBookmarks bookmarks={userInfo.bookmarks ? userInfo.bookmarks : []} /></Suspense>
+        <Suspense fallback={<FallBackLoader />}><LearnerUpvotedCapsules upvoted={ userInfo.upvoted_capsules ? userInfo.upvoted_capsules : [] }/></Suspense>
+      </div>
+      </div>
   )
 }
 

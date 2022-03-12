@@ -1,20 +1,23 @@
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import CreateLearner from '../auth/createAccountPage'
-import LoginPage from '../auth/loginPage'
-import FetchCapsuleInfo from '../capsule/fetchCapsuleInfo'
-import FetchCapsules from '../capsule/fetchCapsules'
-import SearchCapsule from '../capsule/searchCapsule'
-import MyInfo from '../learner/learnerInfo'
-import UpgradeRequest from '../learner/upgradeRequest'
-import ProtectLearnerRoute from '../utils/protectRoute'
 import { ProtectRouteForGod } from '../utils/protectAdminRoute'
-import AdminDashboard from '../admin/adminDashboard'
-// import { FooterPage } from './footerPage'
+import FallBackLoader from '../utils/fallbackLoader'
+const CreateLearner = lazy(() => import('../auth/createAccountPage'))
+const LoginPage = lazy(() => import('../auth/loginPage'))
+const FetchCapsuleInfo = lazy(() => import('../capsule/fetchCapsuleInfo'))
+const MyInfo = lazy(() => import('../learner/learnerInfo'))
+const UpgradeRequest = lazy(() => import('../learner/upgradeRequest'))
+const ProtectLearnerRoute = lazy(() => import('../utils/protectRoute'))
+const AdminDashboard = lazy(() => import('../admin/adminDashboard'))
+const SearchCapsule = lazy(() => import('../capsule/searchCapsule'))
+const FetchCapsules = lazy(() => import('../capsule/fetchCapsules'))
+// const FooterPage = lazy(() => import('./footerPage'))
 
 export const MainPageComponent = () => {
   document.title = 'LearnPath - Home'
   return (
     <div>
+      <Suspense fallback = {<FallBackLoader />}>
     <Routes>
       <Route path='/' element={<FetchCapsules />} />
         <Route path='/search/:name' element={<SearchCapsule />} />
@@ -26,7 +29,8 @@ export const MainPageComponent = () => {
         <Route path='/my/info/*' element={<ProtectLearnerRoute><MyInfo /></ProtectLearnerRoute>} />
         <Route path='/request/upgrade/to/mod' element={<ProtectLearnerRoute><UpgradeRequest /></ProtectLearnerRoute>} />
       </Routes>
-    {/* <FooterPage /> */}
+        {/* <FooterPage /> */}
+        </Suspense>
     </div>
   )
 }
