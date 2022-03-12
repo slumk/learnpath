@@ -51,7 +51,7 @@ const FetchCapsules = () => {
 export const buildThumbnailURL = (capsule) => {
   const ytId = capsule.yt_src.slice(17) // it's good if the thumbnail url generated before saving in DB
   const ytUrl = 'https://img.youtube.com/vi/' + ytId + '/0.jpg'
-  capsule.yt_thumbnail_url = ytUrl
+  return ytUrl
 }
 
 const fetchCapsules = async () => {
@@ -74,7 +74,9 @@ const reportCapsule = async (capsuleId) => {
 export const CapsuleGrid = ({ capsule }) => {
   const { auth } = useContext(AuthContext)
   const [isBookmarked, setBookmarkStatus] = useState(false)
+  const [thumbnailLink, setThumbnailLink] = useState('')
   useEffect(async () => {
+    setThumbnailLink(buildThumbnailURL(await capsule))
     try {
       await (auth.learner_bookmarks).forEach(bookmarkedEndi => {
         if (bookmarkedEndi === capsule._id) {
@@ -87,7 +89,7 @@ export const CapsuleGrid = ({ capsule }) => {
   }, [auth])
   return (
   <div className='justify-center rounded-lg border-slate-900 border-2 cursor-default relative'>
-      <Link to={ '/capsule/' + capsule._id }><img src={capsule.yt_thumbnail_url} /></Link>
+      <Link to={ '/capsule/' + capsule._id }><img src={thumbnailLink} /></Link>
     <h1 className='"absolute inset-x-0 bottom-0 text-center text-3xl' id='capsule-title'>{capsule.label}</h1>
     <div className='grid grid-cols-2 p-1'>
       <div className='flex'>

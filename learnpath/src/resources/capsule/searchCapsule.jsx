@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { buildThumbnailURL } from './fetchCapsules'
 import likedIcon from '../../icons/liked.png'
@@ -12,12 +12,12 @@ const searchingState = {
   is_failed: false
 }
 
-const Loading = () => {
-  document.title = 'Searching...'
+export const Loading = () => {
+  document.title = 'Please Wait...'
   return (
     <div className='grid justify-center'>
       <img src={loadingIcon} width="80px" height="80px" className='mx-auto animate-spin' />
-      <h3 className='font-semibold'>Searching, Please Wait...</h3>
+      <h3 className='font-semibold'>Please Wait...</h3>
       </div>
   )
 }
@@ -32,13 +32,16 @@ const NotFound = () => {
       </div>
   )
 }
-const SearchResults = ({ capsule }) => {
-  buildThumbnailURL(capsule)
+export const SearchResults = ({ capsule }) => {
+  const [thumbnail, setThumbnailLink] = useState('')
+  useEffect(async () => {
+    setThumbnailLink(buildThumbnailURL(await capsule))
+  }, [capsule])
   return (
       <div className='mx-auto mt-2 container flex justify-center'>
         <div className='flex gap-2'>
         <Link to={'/capsule/' + capsule._id}>
-          <img src={capsule.yt_thumbnail_url} width="150px" height="200px" />
+          <img src={thumbnail} width="150px" height="200px" />
           </Link>
         <div className='grid'>
           <div className='flex flex-col'>

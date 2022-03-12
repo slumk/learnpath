@@ -9,7 +9,7 @@ import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
 import { AuthContext } from '../../App'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 
-const fetchCapsuleInfo = async (capsuleId) => {
+export const fetchCapsuleInfo = async (capsuleId) => {
   let capsuleInfo = await fetch('/api/capsules/capsule/' + capsuleId)
   if (await capsuleInfo.status === 200) {
     capsuleInfo = await capsuleInfo.json()
