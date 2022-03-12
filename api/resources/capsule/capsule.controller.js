@@ -1,4 +1,5 @@
 import { capsuleModel } from './capsule.model.js'
+import { teacherModel } from '../teacher/teacher.model.js'
 export const fetchSingleCapsule = async (id) => {
 	try {
 		const capsule = await capsuleModel
@@ -44,6 +45,19 @@ export const searchCapsule = async (search_term) => {
 			return false
 		}
 		return { result: search_result }
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+
+export const fetchTeacherDetails = async (teacher_id) => {
+	try {
+		const teacher = await teacherModel.findById(teacher_id)
+		if (teacher) {
+			return teacher
+		}
+		return false
 	} catch (error) {
 		console.error(error)
 		return false
