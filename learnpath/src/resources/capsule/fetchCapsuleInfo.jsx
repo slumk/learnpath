@@ -1,19 +1,23 @@
-import { useContext, useEffect, useState } from 'react'
+import { lazy, Suspense, useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import likeIcon from '../../icons/like.png'
 import likedIcon from '../../icons/liked.png'
+import userIcon from '../../icons/user.png'
 import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
+import { fetchTeacherName } from './fetchTeacherInfo'
 import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
 import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
 import { AuthContext } from '../../App'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
+import FallBackLoader from '../utils/fallbackLoader'
+const TeacherInfo = lazy(() => import('./teacherInfo'))
 
 export const fetchCapsuleInfo = async (capsuleId) => {
   let capsuleInfo = await fetch('/api/capsules/capsule/' + capsuleId)
   if (await capsuleInfo.status === 200) {
     capsuleInfo = await capsuleInfo.json()
-    return capsuleInfo.data
+    return await capsuleInfo.data
   }
   return false
 }
@@ -22,10 +26,12 @@ const FetchCapsuleInfo = () => {
   const { auth } = useContext(AuthContext)
   const { capsuleId } = useParams()
   const [capsule, setCapsule] = useState({})
+  const [teacherName, updateTeacherName] = useState()
   const [ytId, setYtId] = useState('')
   const [isUpvoted, setUpvoteStatus] = useState(false)
   const [upvoteCount, setUpvoteCount] = useState(0)
   const [isBookmarked, setBookmarkStatus] = useState(false)
+  const [isTeacherInfoShown, toggleDisplayTeacherInfo] = useState(false)
   const navigate = useNavigate()
   const stripYtId = async (ytSrc) => {
     const id = await ytSrc.slice(17)
@@ -36,6 +42,7 @@ const FetchCapsuleInfo = () => {
     setCapsule(await gotCapsule)
     await stripYtId(await gotCapsule.yt_src)
     setUpvoteCount(await gotCapsule.upvote_count)
+    updateTeacherName(await fetchTeacherName(await gotCapsule.created_by))
     auth.learner_bookmarks.forEach(async (bookmarkedElement) => {
       if (bookmarkedElement === await gotCapsule._id) {
         setBookmarkStatus(true)
@@ -50,14 +57,20 @@ const FetchCapsuleInfo = () => {
   return (
     <div className='container mx-auto py-10'>
       <div className='grid grid-cols-2 gap-3'>
-        <div className='flex flex-col gap-1'>
-        <div className='flex justify-end'>
-        <iframe width="560" height="315" src={`https://www.youtube.com/embed/${ytId}`} title="YouTube video player" frameBorder="0" allowFullScreen></iframe>
-        </div>
-          <div className='flex gap-5 justify-end'>
-            <span className='pr-auto'>
+        <div className='grid gap-1 justify-center'>
+          <div className='flex gap-1'>
+            <img src={userIcon} width="40px" />
+            <span className='self-center font-medium hover:font-semibold'
+            onClick={(e) => toggleDisplayTeacherInfo(!isTeacherInfoShown)}>
+              {teacherName}
+            </span>
+          </div>
+          <iframe className='border-2 border-black rounded-xl' width="560" height="315" src={`https://www.youtube.com/embed/${ytId}`} title="YouTube video player" frameBorder="0" allowFullScreen></iframe>
+          <div className='grid grid-cols-2'>
+            <span>
               Posted on {returnHumanizedDateAndTime(capsule.created_date)}
             </span>
+        <div className='flex gap-2 justify-end'>
             <div className='flex'>
               <img src={isUpvoted ? likedIcon : likeIcon}
                 onClick = {
@@ -97,10 +110,14 @@ const FetchCapsuleInfo = () => {
                     }
                   }
                   : (e) => e.preventDefault()
-            }/>
+            } />
+              </div>
         </div>
         </div>
-        </div>
+        <Suspense fallback={<FallBackLoader />}>
+          <div>{isTeacherInfoShown ? <TeacherInfo teacherId={capsule.created_by} /> : null}</div>
+          </Suspense>
+      </div>
     </div>
   )
 }

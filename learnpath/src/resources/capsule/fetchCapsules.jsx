@@ -6,10 +6,11 @@ import reportIcon from '../../icons/report.png'
 import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
 import refreshIcon from '../../icons/refresh.png'
-// import dangerIcon from '../../icons/danger.png'
+import userIcon from '../../icons/user.png'
 import './custom_fonts.css'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 import { chopBookmarksAndUpvoted } from '../learner/fetchLearnerInfo'
+import { fetchTeacherName } from './fetchTeacherInfo'
 // import { FetchCapsuleInfo } from './fetchCapsuleInfo'
 
 const FetchCapsules = () => {
@@ -75,6 +76,7 @@ export const CapsuleGrid = ({ capsule }) => {
   const { auth } = useContext(AuthContext)
   const [isBookmarked, setBookmarkStatus] = useState(false)
   const [thumbnailLink, setThumbnailLink] = useState('')
+  const [creatorName, updateName] = useState('')
   useEffect(async () => {
     setThumbnailLink(buildThumbnailURL(await capsule))
     try {
@@ -83,6 +85,7 @@ export const CapsuleGrid = ({ capsule }) => {
           return setBookmarkStatus(true)
         }
       })
+      updateName(await fetchTeacherName(capsule.created_by))
     } catch (error) {
       return null
     }
@@ -90,7 +93,11 @@ export const CapsuleGrid = ({ capsule }) => {
   return (
   <div className='justify-center rounded-lg border-slate-900 border-2 cursor-default relative'>
       <Link to={ '/capsule/' + capsule._id }><img src={thumbnailLink} /></Link>
-    <h1 className='"absolute inset-x-0 bottom-0 text-center text-3xl' id='capsule-title'>{capsule.label}</h1>
+      <h1 className='"absolute inset-x-0 bottom-0 text-center text-2xl' id='capsule-title'>{capsule.label}</h1>
+      <div className='flex'>
+        <img src={userIcon} width="24px"/>
+        <span className='self-center text-sm italic'>{ creatorName }</span>
+      </div>
     <div className='grid grid-cols-2 p-1'>
       <div className='flex'>
           <img src={likedIcon}

@@ -5,21 +5,21 @@ const modalRoot = document.getElementById('modal-root')
 class Modal extends Component {
   constructor (props) {
     super(props)
-    this.endi = document.createElement('div')
+    this.ele = document.createElement('div')
   }
 
   componentDidMount () {
-    modalRoot.appendChild(this.endi)
+    modalRoot.appendChild(this.ele)
   }
 
   componentWillUnmount () {
-    modalRoot.removeChild(this.endi)
+    modalRoot.removeChild(this.ele)
   }
 
   render () {
     return createPortal(
       this.props.children,
-      this.endi
+      this.ele
     )
   }
 }

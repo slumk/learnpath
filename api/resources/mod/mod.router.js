@@ -72,7 +72,7 @@ modRouter.get('/fetch/reported/:what', async (req, res) => {
 		}
 		return res.status(404).end()
 	}
-	case 'learners': {
+	case 'teachers': {
 		const reported_teacher = await fetchReportedTeachers()
 		if (reported_teacher) { 
 			return res.status(200).json(reported_teacher).end()
