@@ -46,7 +46,7 @@ capsuleRouter.get('/teacher/:id', async (req, res) => {
 	return res.status(200).json(response).end()
 })
 
-capsuleRouter.get('/fetch/capsules/of/:teacherId', async (req, res) => {
+capsuleRouter.get('/fetch/of/:teacherId', async (req, res) => {
 	const capsules = await fetchOwnCapsules(req.params.teacherId)
 	if (capsules) {
 		return res.status(200).json(capsules).end()
