@@ -114,10 +114,10 @@ export const fetchLearnerRelations = async (user_id) => {
 		}
 		const is_teacher = await teacherModel.find({ learner_id: user_id })
 		const is_mod = await modModel.find({ learner_id: user_id })
-		if (is_teacher[0].toString()) {
+		if (await is_teacher[0].toString()) {
 			is_teacher[0].is_approved ? user.is_teacher = true : user.is_teacher = 'requested'
 		}
-		if (is_mod.toString()) {
+		if (await is_mod[0].toString()) {
 			user.is_mod = true
 		}
 		return user

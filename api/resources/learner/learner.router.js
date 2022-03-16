@@ -47,7 +47,7 @@ learnerRouter.get('/my/info', async (req, res) => {
 
 learnerRouter.get('/my/relations', async (req, res) => {
 	const info = await fetchLearnerRelations(req.user_id)
-	if (info) {
+	if (await info) {
 		return res.status(200).json(info).end()
 	}
 	return res.status(400).end()
