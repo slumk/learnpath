@@ -56,7 +56,7 @@ const FetchCapsuleInfo = () => {
   }, [])
   return (
     <div className='container mx-auto py-10'>
-      <div className='grid grid-cols-2 gap-3'>
+      <div className='flex flex-col gap-3'>
         <div className='grid gap-1 justify-center'>
           <div className='flex gap-1'>
             <img src={userIcon} width="40px" />
@@ -97,7 +97,7 @@ const FetchCapsuleInfo = () => {
               <span>{upvoteCount}</span></div>
             <img src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
               onClick= {
-                auth
+                auth.isLoggedin
                   ? async (e) => {
                     if (isBookmarked) {
                       if (await removeBookmark(capsule._id)) {
@@ -111,12 +111,20 @@ const FetchCapsuleInfo = () => {
                   }
                   : (e) => e.preventDefault()
             } />
-              </div>
+            </div>
         </div>
+            <div className='flex gap-1 pt-3'>
+              <h1 className='self-center'>Tags: </h1>
+              {(capsule.tags)
+                ? (capsule.tags).map((tag) => (
+                  <span key={tag} className='bg-blue-200 rounded-xl p-1'>{tag}</span>
+                  ))
+                : null }
+            </div>
         </div>
         <Suspense fallback={<FallBackLoader />}>
-          <div>{isTeacherInfoShown ? <TeacherInfo teacherId={capsule.created_by} /> : null}</div>
-          </Suspense>
+            {isTeacherInfoShown ? <TeacherInfo teacherId={capsule.created_by} /> : null}
+        </Suspense>
       </div>
     </div>
   )
