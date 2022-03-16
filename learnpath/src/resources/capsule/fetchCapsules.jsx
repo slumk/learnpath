@@ -11,7 +11,6 @@ import './custom_fonts.css'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 import { chopBookmarksAndUpvoted } from '../learner/fetchLearnerInfo'
 import { fetchTeacherName } from './fetchTeacherInfo'
-// import { FetchCapsuleInfo } from './fetchCapsuleInfo'
 
 const FetchCapsules = () => {
   const { god, setGodPlace } = useContext(GodContext)
@@ -40,7 +39,7 @@ const FetchCapsules = () => {
           className={refresh ? 'animate-spin' : ''}
           onClick={(e) => setwannaRefresh(true) }/>
     </div>
-    <div className='container my-3 mx-auto grid grid-cols-5 gap-3'>
+    <div className='container my-3 mx-auto grid lg:grid-cols-5 gap-3'>
       {capsules.map((item) => (
         <CapsuleGrid key={item._id} capsule={item} />
       ))}

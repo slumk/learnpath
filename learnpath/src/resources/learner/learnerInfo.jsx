@@ -70,7 +70,9 @@ const MyInfo = () => {
         </div>
       </div>
       {auth.is_mod ? <ModPage /> : null}
-      {(auth.is_teacher !== 'requested') ? <TeacherMenu /> : null}
+      {
+        (auth.is_teacher !== true) ? null : <TeacherMenu />
+      }
       <div className='grid grid-cols-2 rounded-md divide-x-4 divide-black p-5 border-2 border-black'>
         <Suspense fallback={<FallBackLoader />}><LearnerBookmarks bookmarks={userInfo.bookmarks ? userInfo.bookmarks : []} /></Suspense>
         <Suspense fallback={<FallBackLoader />}><LearnerUpvotedCapsules upvoted={ userInfo.upvoted_capsules ? userInfo.upvoted_capsules : [] }/></Suspense>
