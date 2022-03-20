@@ -33,6 +33,17 @@ const capsuleSchema = new mongoose.Schema(
 			type: Number,
 			default: 0
 		},
+		report_reason: {
+			type: String,
+			default: '',
+			enum: [
+				'Fraudulent Content',
+				'Title Mismatch',
+				'Adult Content',
+				'Violent or Repulsive Content',
+				'Spam or Misleading'
+			]
+		},
 		is_approved: {
 			type: Boolean,
 			default: false

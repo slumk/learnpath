@@ -27,10 +27,10 @@ export const fetchCapsules = async () => {
 		return false
 	}
 }
-export const reportCapsule = async (capsule_id) => {
+export const reportCapsule = async (capsule_id, report_reason) => {
 	try {
 		await capsuleModel.findByIdAndUpdate(capsule_id, { $inc: { report_count: 1 } })
-			.lean()
+		await capsuleModel.findByIdAndUpdate(capsule_id, { report_reason: report_reason })
 		return true
 	} catch (error) {
 		console.error(error)

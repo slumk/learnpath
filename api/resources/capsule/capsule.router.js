@@ -31,11 +31,11 @@ capsuleRouter.get('/search/:term', async (req, res) =>{
 
 // reports a capsule
 capsuleRouter.put('/capsule/report/:id', async (req, res) => {
-	const status = await reportCapsule(req.params.id)
+	const status = await reportCapsule(req.params.id, req.body.reportReason)
 	if (status) {
-		return res.status(202).json({ message: 'reported successfully' }).end()
+		return res.status(202).end()
 	}
-	return res.status(404).json({ message: 'some error occured' }).end()
+	return res.status(404).end()
 })
 
 capsuleRouter.get('/teacher/:id', async (req, res) => {
