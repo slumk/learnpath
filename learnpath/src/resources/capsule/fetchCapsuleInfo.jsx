@@ -5,12 +5,15 @@ import likedIcon from '../../icons/liked.png'
 import userIcon from '../../icons/user.png'
 import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
+import reportIcon from '../../icons/report.png'
 import { fetchTeacherName } from './fetchTeacherInfo'
 import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
 import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
 import { AuthContext } from '../../App'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 import FallBackLoader from '../utils/fallbackLoader'
+import ReportModal from '../utils/reportReason'
+import ReportCapsule from './reportCapsule'
 const TeacherInfo = lazy(() => import('./teacherInfo'))
 
 export const fetchCapsuleInfo = async (capsuleId) => {
@@ -32,6 +35,8 @@ const FetchCapsuleInfo = () => {
   const [upvoteCount, setUpvoteCount] = useState(0)
   const [isBookmarked, setBookmarkStatus] = useState(false)
   const [isTeacherInfoShown, toggleDisplayTeacherInfo] = useState(false)
+  const [isReportDialogueShown, updateState] = useState(false)
+  const [isReportIconShown, updateIconStatus] = useState(true)
   const navigate = useNavigate()
   const stripYtId = async (ytSrc) => {
     const id = await ytSrc.slice(17)
@@ -111,6 +116,12 @@ const FetchCapsuleInfo = () => {
                   }
                   : (e) => e.preventDefault()
             } />
+            <img src={reportIcon}
+          className={`${isReportIconShown ? null : 'hidden'}`}
+              onClick={(event) => {
+                updateState(true)
+              }
+            } />
             </div>
         </div>
             <div className='flex gap-1 pt-3'>
@@ -126,6 +137,7 @@ const FetchCapsuleInfo = () => {
             {isTeacherInfoShown ? <TeacherInfo teacherId={capsule.created_by} /> : null}
         </Suspense>
       </div>
+      {isReportDialogueShown ? <ReportModal><ReportCapsule capsule={capsule} updateReportDialogueStatus={updateState} updateIconStatus={updateIconStatus} /></ReportModal> : null}
     </div>
   )
 }

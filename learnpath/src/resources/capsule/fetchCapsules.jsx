@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react' // use useContext
 import { Link } from 'react-router-dom'
 import { AuthContext, GodContext } from '../../App'
 import likedIcon from '../../icons/liked.png'
-import reportIcon from '../../icons/report.png'
 import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
 import refreshIcon from '../../icons/refresh.png'
@@ -62,15 +61,6 @@ const fetchCapsules = async () => {
   return response.data
 }
 
-const reportCapsule = async (capsuleId) => {
-  const isReported = await fetch('/api/capsules/capsule/report/' + capsuleId,
-    { method: 'PUT' })
-  if (isReported.status === 202) {
-    return true
-  }
-  return false
-}
-
 export const CapsuleGrid = ({ capsule }) => {
   const { auth } = useContext(AuthContext)
   const [isBookmarked, setBookmarkStatus] = useState(false)
@@ -121,15 +111,8 @@ export const CapsuleGrid = ({ capsule }) => {
                 : (e) => e.preventDefault()
           }
           />
-          <img src={reportIcon}
-            onClick={(event) => {
-              if (reportCapsule(capsule._id)) {
-                event.target.className = 'hidden'
-              }
-            }
-            } />
         </div>
-        </div>
+      </div>
     </div>)
 }
 export default FetchCapsules
