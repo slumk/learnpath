@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchReportedCapsules } from './fetchReportedCapsules'
+import { fetchReportedCapsules } from '../../teacher/fetchReportedCapsules'
 import MyCapsuleGrid from './myCapsuleGrid'
 
 const ReportedCapsules = () => {
