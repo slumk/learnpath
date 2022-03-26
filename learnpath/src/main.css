@@ -10,3 +10,7 @@
     position: relative;
     z-index: 999;
 }
+#message-root {
+    position: relative;
+    z-index: 999;
+}

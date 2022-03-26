@@ -7,3 +7,4 @@ learnpath/.parcel-cache
 learnpath/dist
 .vscode/
 api/utils/scripts/*
+startFrontAndBack.sh
