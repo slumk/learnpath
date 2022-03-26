@@ -42,7 +42,6 @@ const BookMarkGrid = ({ capsuleId }) => {
   const [capsuleInfo, setCapsuleInfo] = useState({})
   useEffect(async () => {
     const capsuleInfo = await fetchCapsuleInfo(capsuleId)
-    console.log(await capsuleInfo)
     if (!capsuleInfo) {
       await removeBookmark(capsuleId)
     }

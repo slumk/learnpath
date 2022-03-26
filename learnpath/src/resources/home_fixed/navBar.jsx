@@ -14,16 +14,18 @@ const NavBarComponent = (props) => {
   }, [auth])
   return (
     <div className='bg-gradient-to-r from-sky-300 grid lg:grid-cols-2'>
-            <div className=" m-2 px-1 py-1.5">
+            <div className=" m-2 px-1 py-1.5 text-center lg:text-left">
             <Link to='/' onClick={(e) => setClickStatus(false)}>
               <h1 className="px-2 text-7xl font-semibold" id="main-heading">
             learnpath
           </h1>
             </Link>
-                <h3 className='px-4 mt-1 text-md' id='tagline'>Your Path To Mastery</h3>
+        <h3 className='px-4 mt-1 text-md' id='tagline'>
+          Your Path To Mastery
+        </h3>
       </div>
-      <div className='flex gap-0.5 justify-end mx-3'>
-                    <form className='self-center' onSubmit={(e) => {
+      <div className='flex lg:flex-row flex-col gap-0.5 justify-end mx-3'>
+                    <form className='flex flex-col gap-2 lg:flex-row self-center' onSubmit={(e) => {
                       e.preventDefault()
                       if (!(e.target[0].value)) {
                         return null

@@ -80,7 +80,7 @@ export const CapsuleGrid = ({ capsule }) => {
     }
   }, [auth])
   return (
-  <div className='justify-center rounded-lg border-slate-900 border-2 cursor-default relative'>
+  <div className='justify-center m-4 lg:m-0.5 rounded-lg border-slate-900 border-2 cursor-default relative'>
       <Link to={ '/capsule/' + capsule._id }><img src={thumbnailLink} /></Link>
       <h1 className='"absolute inset-x-0 bottom-0 text-center text-2xl' id='capsule-title'>{capsule.label}</h1>
       <div className='flex'>

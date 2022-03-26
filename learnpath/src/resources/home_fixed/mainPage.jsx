@@ -19,7 +19,7 @@ export const MainPageComponent = () => {
     <div>
       <Suspense fallback = {<FallBackLoader />}>
     <Routes>
-      <Route path='/' element={<FetchCapsules />} />
+        <Route path='/' element={<FetchCapsules />} />
         <Route path='/search/:name' element={<SearchCapsule />} />
         <Route path='/god/getin' element={<ProtectRouteForGod><AdminDashboard /></ProtectRouteForGod>} />
         <Route path='/admin/dashboard/*' element={<ProtectRouteForGod><AdminDashboard /></ProtectRouteForGod>} />

@@ -37,6 +37,7 @@ const capsuleSchema = new mongoose.Schema(
 			type: String,
 			default: '',
 			enum: [
+				'',
 				'Fraudulent Content',
 				'Title Mismatch',
 				'Adult Content',

@@ -21,11 +21,14 @@ const MyInfo = () => {
   useEffect(async () => {
     document.title = userInfo.name + ' - ' + 'My Profile'
     const learnerInfo = await fetchLearnerInfo()
+    if (!learnerInfo) {
+      return setAuth({ ...auth, ...{ isLoggedin: false } })
+    }
     setUserInfo(learnerInfo)
     setLoading(false)
     const learnerRelations = await checkRelations()
     setAuth({ ...auth, ...learnerRelations })
-  }, [userInfo.name])
+  }, [])
   return (
       <div className='container mx-auto flex flex-col lg:gap-8'>
           <div className=' flex flex-col gap-1'>
@@ -69,11 +72,13 @@ const MyInfo = () => {
             </Link>
         </div>
       </div>
-      {auth.is_mod ? <ModPage /> : null}
+      <div className='hidden lg:block'>
+      { auth.is_mod ? <ModPage /> : null }
+        </div>
       {
         (auth.is_teacher !== true) ? null : <TeacherMenu />
       }
-      <div className='grid grid-cols-2 rounded-md divide-x-4 divide-black p-5 border-2 border-black'>
+      <div className='grid lg:grid-cols-2 rounded-md gap-5 lg:divide-x-4 divide-black p-5 border-2 border-black'>
         <Suspense fallback={<FallBackLoader />}><LearnerBookmarks bookmarks={userInfo.bookmarks ? userInfo.bookmarks : []} /></Suspense>
         <Suspense fallback={<FallBackLoader />}><LearnerUpvotedCapsules upvoted={ userInfo.upvoted_capsules ? userInfo.upvoted_capsules : [] }/></Suspense>
       </div>

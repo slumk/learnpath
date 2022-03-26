@@ -38,7 +38,7 @@ export const SearchResults = ({ capsule }) => {
     setThumbnailLink(buildThumbnailURL(await capsule))
   }, [capsule])
   return (
-      <div className='mx-auto mt-2 container flex justify-center'>
+      <div className='p-3 m-3 mt-2 container flex justify-center'>
         <div className='flex gap-2'>
         <Link to={'/capsule/' + capsule._id}>
           <img src={thumbnail} width="150px" height="200px" />

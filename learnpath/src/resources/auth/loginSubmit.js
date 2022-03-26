@@ -3,7 +3,7 @@ export const handleSubmit = async (email, password) => {
     email: email,
     password: password
   }
-  const isLoggedin = await fetch('api/user/login',
+  const isLoggedin = await fetch('/api/user/login',
     {
       method: 'POST',
       headers: {
