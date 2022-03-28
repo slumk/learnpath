@@ -9,6 +9,8 @@ const NavBarComponent = (props) => {
   const { god } = useContext(GodContext)
   const navigate = useNavigate()
   const [clicked, setClickStatus] = useState(false)
+  const [searchTerm, updateSearchTerm] = useState('')
+  // const [isUserMenuShown, updateUserMenuDisplayStatus] = useState(false)
   useEffect(() => {
     setClickStatus(false)
   }, [auth])
@@ -25,14 +27,18 @@ const NavBarComponent = (props) => {
         </h3>
       </div>
       <div className='flex lg:flex-row flex-col gap-0.5 justify-end mx-3'>
-                    <form className='flex flex-col gap-2 lg:flex-row self-center' onSubmit={(e) => {
-                      e.preventDefault()
-                      if (!(e.target[0].value)) {
-                        return null
-                      }
-                      navigate('/search/' + e.target[0].value)
-                    }}>
-                    <input type="text" className='rounded-lg px-3 py-1' placeholder='Search Capsules Here...'/>
+        <form className='flex flex-col gap-2 lg:flex-row self-center' onSubmit={(e) => {
+          e.preventDefault()
+          if (!searchTerm) {
+            return null
+          }
+          navigate('/search/' + searchTerm)
+          return updateSearchTerm('')
+        }}>
+          <input type="text"
+            className='rounded-lg px-3 py-1'
+            placeholder='Search Capsules Here...'
+          onChange={(e) => updateSearchTerm(e.target.value)}/>
                     <button type="submit" className='rounded-full px-3 py-1 mx-1.5 text-1xl bg-blue-200 hover:bg-blue-500'>
                         Search
                     </button>
@@ -48,7 +54,7 @@ const NavBarComponent = (props) => {
         <div className=' self-center'>
           <Link to='/my/info'>
           <img
-            className={`${auth.isLoggedin ? '' : 'hidden'} is rounded-full text-3xl px-4 py-2 mx-1.5 hover:bg-green-500`}
+            className={`${auth.isLoggedin ? '' : 'hidden'} is rounded-full text-3xl px-4 py-2 mx-1.5 hover:shadow-xl`}
             src={userIcon}
             width="90px"
             height="90px"

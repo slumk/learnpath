@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { AuthContext } from '../../App'
+import { AuthContext, BubbleMessageContext } from '../../App'
 import LoginPage from '../auth/loginPage'
 
 const ProtectLearnerRoute = ({ children }) => {
@@ -7,6 +7,9 @@ const ProtectLearnerRoute = ({ children }) => {
   if (auth.isLoggedin) {
     return children
   }
+  const { updateBubbleMessage, updateMessageDisplayStatus } = useContext(BubbleMessageContext)
+  updateBubbleMessage('Please Login To Access This Page')
+  updateMessageDisplayStatus(true)
   return <LoginPage />
 }
 

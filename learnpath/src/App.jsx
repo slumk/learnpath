@@ -2,6 +2,7 @@ import NavBarComponent from './resources/home_fixed/navBar.jsx'
 import { MainPageComponent } from './resources/home_fixed/mainPage.jsx'
 import { createContext, useState } from 'react'
 import BubbleMessageModal, { BubbleMessage } from './resources/utils/bubbleMessage.jsx'
+import Disclaimer from './resources/utils/disclaimer.jsx'
 
 export const AuthContext = createContext()
 export const GodContext = createContext() // Admin is god here
@@ -41,7 +42,7 @@ export const App = () => {
         <BubbleMessageContext.Provider value={{ bubbleMessage, updateBubbleMessage, isMessageShown, updateMessageDisplayStatus }}>
   <div className='h-screen relative'>
       <div>
-          <div><NavBarComponent/></div>
+          <div><NavBarComponent /></div>
       </div>
             <div>
               { bubbleMessage
@@ -51,10 +52,11 @@ export const App = () => {
                 : null }
         <div><MainPageComponent/></div>
       </div>
+      <div><Disclaimer /></div>
           </div>
           </BubbleMessageContext.Provider>
       </AuthContext.Provider>
-      </GodContext.Provider>
+    </GodContext.Provider>
   )
 }
 
