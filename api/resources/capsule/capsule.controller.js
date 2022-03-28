@@ -40,7 +40,16 @@ export const reportCapsule = async (capsule_id, report_reason) => {
 
 export const searchCapsule = async (search_term) => {
 	try {
-		const search_result = await capsuleModel.find({ $text: { $search: search_term } },)
+		const search_result = await capsuleModel
+			.aggregate([{
+				$match: {
+					$or: [
+						{ label: new RegExp(search_term) },
+						{ tags: { $elemMatch: { $regex: new RegExp(search_term) } } },
+						{ description: new RegExp(search_term) }
+					]
+				}
+			}])
 		if(!search_result.toString()){
 			return false
 		}
