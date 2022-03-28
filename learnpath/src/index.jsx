@@ -11,7 +11,8 @@ render(
             <Routes>
                 <Route path='/*' element={<App />} />
             </Routes>
-            </Router>
-            </ErrorBoundary>
+        </Router>
+        </ErrorBoundary>
     </StrictMode>,
-    document.getElementById('root'))
+    document.getElementById('root')
+)

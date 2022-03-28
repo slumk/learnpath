@@ -1,12 +1,12 @@
 import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { AuthContext } from '../../App'
+import { AuthContext, BubbleMessageContext } from '../../App'
 import LoginIcon from '../../icons/login.png'
 import { handleSubmit } from './loginSubmit'
 
 const LoginPage = () => {
   const { setAuth } = useContext(AuthContext)
-  const [error, setError] = useState('')
+  const { updateBubbleMessage, updateMessageDisplayStatus } = useContext(BubbleMessageContext)
   const navigate = useNavigate()
   document.title = 'LearnPath - Login'
   const [email, setEmail] = useState('')
@@ -24,7 +24,8 @@ const LoginPage = () => {
               })
               return navigate('/')
             }
-            setError('Check Username And Password Again')
+            updateBubbleMessage('Check Username And Password Again')
+            updateMessageDisplayStatus(true)
           }}>
             <input type='text'
               placeholder="Enter Your Email"
@@ -40,7 +41,6 @@ const LoginPage = () => {
               onChange={
                 (e) => setPassword(e.target.value)
               } />
-            <span className='mx-auto italic'>{ error || '' }</span>
             <button className="rounded-full mt-5 w-96 text-xl py-2 bg-red-500 hover:bg-red-400"
             type='submit'>
                 Login

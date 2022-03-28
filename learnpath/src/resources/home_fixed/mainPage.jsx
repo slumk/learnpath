@@ -11,7 +11,6 @@ const ProtectLearnerRoute = lazy(() => import('../utils/protectRoute'))
 const AdminDashboard = lazy(() => import('../admin/adminDashboard'))
 const SearchCapsule = lazy(() => import('../capsule/searchCapsule'))
 const FetchCapsules = lazy(() => import('../capsule/fetchCapsules'))
-// const FooterPage = lazy(() => import('./footerPage'))
 
 export const MainPageComponent = () => {
   document.title = 'LearnPath - Home'

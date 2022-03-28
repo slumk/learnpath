@@ -3,7 +3,7 @@ import { fetchLearnerInfo } from './fetchLearnerInfo'
 import userIcon from '../../icons/infoUser.png'
 import teacherIcon from '../../icons/teacher.png'
 // import { fetchCapsuleInfo } from './fetchCapsuleInfos'
-import { AuthContext } from '../../App'
+import { AuthContext, BubbleMessageContext } from '../../App'
 import { checkRelations } from './checkLearner'
 import { logoutUser } from '../auth/logOut'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,6 +15,7 @@ const LearnerBookmarks = lazy(() => import('./learnerBookmarks'))
 
 const MyInfo = () => {
   const { auth, setAuth } = useContext(AuthContext)
+  const { updateBubbleMessage, updateMessageDisplayStatus } = useContext(BubbleMessageContext)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [userInfo, setUserInfo] = useState({})
@@ -40,6 +41,8 @@ const MyInfo = () => {
               ...{ isLoggedin: false, is_mod: false, is_teacher: false, is_god: false, learner_bookmarks: [], learner_upvoted_capsules: [] }
             })
             navigate('/')
+            updateBubbleMessage('You\'ve Successfully Logged Out')
+            updateMessageDisplayStatus(true)
           }
         }}>
           Logout

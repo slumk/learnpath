@@ -8,9 +8,11 @@ const TeacherInfo = ({ teacherId }) => {
   useEffect(async () => {
     const fullInfo = await fetchTeacherInfo(teacherId)
     updateTeacherInfo(await fullInfo)
+    const divElement = document.getElementById('teacherInfo')
+    divElement.scrollIntoView({ behavior: 'smooth' })
   }, [teacherId])
   return (
-    <div className="bg-orange-200 rounded-xl">
+    <div className="container mx-auto bg-orange-200 rounded-xl" id='teacherInfo'>
       <div className='grid justify-center'>
           <img src={userIcon} width="130px" height="130px" className='mx-auto'/>
       <span className='font-extrabold py-1 text-center'>{teacherInfo.teacher_name}</span>

@@ -9,7 +9,7 @@ import reportIcon from '../../icons/report.png'
 import { fetchTeacherName } from './fetchTeacherInfo'
 import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
 import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
-import { AuthContext } from '../../App'
+import { AuthContext, BubbleMessageContext } from '../../App'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 import FallBackLoader from '../utils/fallbackLoader'
 import ReportModal from '../utils/reportReason'
@@ -27,6 +27,7 @@ export const fetchCapsuleInfo = async (capsuleId) => {
 
 const FetchCapsuleInfo = () => {
   const { auth } = useContext(AuthContext)
+  const { updateBubbleMessage, updateMessageDisplayStatus } = useContext(BubbleMessageContext)
   const { capsuleId } = useParams()
   const [capsule, setCapsule] = useState({})
   const [teacherName, updateTeacherName] = useState()
@@ -58,14 +59,15 @@ const FetchCapsuleInfo = () => {
         setUpvoteStatus(true)
       }
     })
+    return null
   }, [])
   return (
-    <div className='container mx-auto py-10'>
+    <div className='py-10 bg-gradient-to-r from-gray-50 to-gray-100'>
       <div className='flex flex-col gap-3'>
         <div className='grid gap-1 justify-center'>
           <div className='flex gap-1'>
             <img src={userIcon} width="40px" />
-            <span className='self-center font-medium hover:font-semibold'
+            <span className='self-center cursor-default font-medium hover:font-semibold'
             onClick={(e) => toggleDisplayTeacherInfo(!isTeacherInfoShown)}>
               {teacherName}
             </span>
@@ -97,7 +99,11 @@ const FetchCapsuleInfo = () => {
                         }
                       }
                     }
-                    : (e) => e.preventDefault()
+                    : (e) => {
+                        e.preventDefault()
+                        updateBubbleMessage('Please Login To Upvote Capsule')
+                        updateMessageDisplayStatus(true)
+                      }
                  } />
               <span>{upvoteCount}</span></div>
             <img src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
@@ -114,7 +120,11 @@ const FetchCapsuleInfo = () => {
                       }
                     }
                   }
-                  : (e) => e.preventDefault()
+                  : (e) => {
+                      e.preventDefault()
+                      updateBubbleMessage('Please Login To Bookmark Capsule')
+                      updateMessageDisplayStatus(true)
+                    }
             } />
             <img src={reportIcon}
           className={`${isReportIconShown ? null : 'hidden'}`}

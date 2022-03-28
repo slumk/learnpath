@@ -38,7 +38,7 @@ const FetchCapsules = () => {
           className={refresh ? 'animate-spin' : ''}
           onClick={(e) => setwannaRefresh(true) }/>
     </div>
-    <div className='container my-3 mx-auto grid lg:grid-cols-5 gap-3'>
+    <div className='container my-3 mx-auto grid lg:grid-cols-4 gap-3'>
       {capsules.map((item) => (
         <CapsuleGrid key={item._id} capsule={item} />
       ))}
@@ -69,16 +69,16 @@ export const CapsuleGrid = ({ capsule }) => {
   useEffect(async () => {
     setThumbnailLink(buildThumbnailURL(await capsule))
     try {
+      updateName(await fetchTeacherName(capsule.created_by))
       await (auth.learner_bookmarks).forEach(bookmarkedEndi => {
         if (bookmarkedEndi === capsule._id) {
           return setBookmarkStatus(true)
         }
       })
-      updateName(await fetchTeacherName(capsule.created_by))
     } catch (error) {
       return null
     }
-  }, [auth])
+  }, [auth, capsule])
   return (
   <div className='justify-center m-4 lg:m-0.5 rounded-lg border-slate-900 border-2 cursor-default relative'>
       <Link to={ '/capsule/' + capsule._id }><img src={thumbnailLink} /></Link>

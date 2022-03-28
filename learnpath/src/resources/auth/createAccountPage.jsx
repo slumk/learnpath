@@ -1,13 +1,13 @@
-import { useReducer, useState } from 'react'
+import { useContext, useReducer } from 'react'
 import SignUpIcon from '../../icons/signup.png'
 import { formReducer, initialData } from './formReducer'
 import { createLearner } from './signupSubmit'
 import { useNavigate } from 'react-router-dom'
-// import { handleChange } from './formValidator'
+import { BubbleMessageContext } from '../../App'
 
 const CreateLearner = () => {
   const navigate = useNavigate()
-  const [error, setError] = useState('')
+  const { updateBubbleMessage, updateMessageDisplayStatus } = useContext(BubbleMessageContext)
   const [state, dispatch] = useReducer(formReducer, initialData)
   return (
     <div className="bg-gradient-to-r from-sky-300 h-screen">
@@ -22,7 +22,8 @@ const CreateLearner = () => {
                 if (isCreated[0]) {
                   return navigate('/login')
                 }
-                return setError(isCreated[1])
+                updateBubbleMessage(isCreated[1])
+                return updateMessageDisplayStatus(true)
               }
             }>
           <div className='flex flex-row gap-0.5'>
@@ -113,7 +114,6 @@ const CreateLearner = () => {
                 })
               }
             } />
-            <span className='text-center italic'>{ error ? 'Error : ' : '' }{ error }</span>
             <button className="rounded-full mt-5 w-96 text-xl py-2 bg-red-500 hover:bg-red-400"
             type='submit'>
                 Create Account
