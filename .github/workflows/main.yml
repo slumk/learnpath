@@ -29,8 +29,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.7.0
-        with:
-          mongodb-version: ${{ matrix.mongodb-version }}
       - name: Installing NPM Packages
         working-directory: api
         run: npm install
