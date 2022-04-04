@@ -13,6 +13,10 @@ jobs:
   build_api:
     name: Testing API
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./api
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -23,8 +27,6 @@ jobs:
       uses: 
         actions/setup-node@v3
       with:
-        working-directory: ./api
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
     - run: npm test
