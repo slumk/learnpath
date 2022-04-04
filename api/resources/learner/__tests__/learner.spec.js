@@ -7,7 +7,7 @@ import { teacherModel } from '../../teacher/teacher.model'
 
 beforeAll(async () => {
 	await test_db_connect()
-	await capsuleModel.deleteMany()
+	await capsuleModel.deleteMany() // clearing capsule model
 	// inserting a test entry in database
 	// setting capsule as approved and visible
 	// for testing purposes
@@ -32,7 +32,7 @@ beforeAll(async () => {
 		age: 25,        
 	})
 	await test_user.save()
-	await teacherModel.deleteMany()
+	await teacherModel.deleteMany() // clearing teacher model
 	const test_teacher = new teacherModel({
 		_id: '620fb734dd24eb1316beacff',
 		teacher_name: 'teacher',

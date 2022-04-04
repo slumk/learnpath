@@ -2,7 +2,7 @@ export const initialData = {
   fullName: '',
   age: '',
   email: '',
-  region: '',
+  region: 'Asia Pacific',
   gender: '',
   password1: '',
   password2: ''

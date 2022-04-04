@@ -12,9 +12,6 @@ export const addMod = async (learner_id) => {
 			gender: learner.gender,
 			age: learner.age
 		})
-		await learnerModel.findByIdAndUpdate(learner_id, {
-			is_mod: true
-		})
 		return true
 	} catch (error) {
 		console.error(error)

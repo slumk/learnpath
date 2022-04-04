@@ -20,6 +20,8 @@ const CreateLearner = () => {
                 e.preventDefault()
                 const isCreated = await createLearner(state)
                 if (isCreated[0]) {
+                  updateBubbleMessage('Account Created Successfully, Please Log in')
+                  updateMessageDisplayStatus(true)
                   return navigate('/login')
                 }
                 updateBubbleMessage(isCreated[1])

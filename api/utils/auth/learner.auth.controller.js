@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs'
-import mongoose from 'mongoose'
 import { learnerModel } from '../../resources/learner/learner.model.js'
 import { makeToken } from './jwtOps.js'
 
@@ -39,11 +38,6 @@ export const createLearner = async (learner_name, learner_email, password, age, 
 		return true
 	}
 	catch (error) {
-		if (error instanceof mongoose.Error.ValidationError) {
-			console.log('Validation Failed')
-			return false
-		}
-		console.error(error)
 		return false
 	}
 }

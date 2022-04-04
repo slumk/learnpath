@@ -6,7 +6,7 @@ import Disclaimer from './resources/utils/disclaimer.jsx'
 
 export const AuthContext = createContext()
 export const GodContext = createContext() // Admin is god here
-export const BubbleMessageContext = createContext() // context for bubble message
+export const BubbleMessageContext = createContext() // Context for bubble message
 
 AuthContext.displayName = 'Normal Auth'
 GodContext.displayName = 'Admin Auth'
@@ -48,7 +48,7 @@ export const App = () => {
               { bubbleMessage
                 ? <BubbleMessageModal>
                   <BubbleMessage />
-                </BubbleMessageModal>
+                  </BubbleMessageModal>
                 : null }
         <div><MainPageComponent/></div>
       </div>
