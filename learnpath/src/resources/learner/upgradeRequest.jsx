@@ -6,6 +6,19 @@ import { useNavigate } from 'react-router-dom'
 const UpgradeRequest = () => {
   const [state, dispatch] = useReducer(upgradeReducer, initialData)
   const navigate = useNavigate()
+  const niches = [
+    'Programming',
+    'Mathematics',
+    'Science',
+    'English',
+    'History',
+    'Art',
+    'Music',
+    'Drama',
+    'Physical Education',
+    'Foreign Languages',
+    'Other'
+  ]
   return (
   <div className="bg-gradient-to-r from-sky-300 h-screen">
     <div className="grid pt-5">
@@ -44,7 +57,22 @@ const UpgradeRequest = () => {
                   dispatch({ type: 'SET_URL', payload: e.target.value })
                 }
               }
-          />
+            />
+            Choose Your Main Subject
+            <select className='rounded-full px-1.5 py-2 border-4 bg-white'
+            onChange={
+                (e) => {
+                  dispatch({ type: 'SET_NICHE', payload: e.target.value })
+                }
+              }>
+              {
+                niches.map((niche) => (
+                  <option key={niche}>
+                    {niche}
+                  </option>
+                ))
+              }
+            </select>
           <button className="rounded-full mt-5 w-96 text-xl py-2 bg-red-500 hover:bg-red-400"
               type='submit'>
             Request Upgrade

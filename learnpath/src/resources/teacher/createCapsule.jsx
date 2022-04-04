@@ -5,6 +5,19 @@ import { createCapsule } from './makeCapsule'
 
 export const CreateCapsule = () => {
   const [formState, dispatch] = useReducer(createCapsuleReducer, initialData)
+  const niches = [
+    'Programming',
+    'Mathematics',
+    'Science',
+    'English',
+    'History',
+    'Art',
+    'Music',
+    'Drama',
+    'Physical Education',
+    'Foreign Languages',
+    'Other'
+  ]
   const pushToTagsArray = (tags) => {
     const tagsArray = tags.split(',')
     dispatch({ type: 'SET_TAGS', payload: tagsArray })
@@ -28,7 +41,17 @@ export const CreateCapsule = () => {
           <input type="text" className="placeholder:italic p-2 rounded-lg border-4 w-100" maxLength="40" placeholder="Enter YouTube Link (e:g: youtu.be)"
           onChange={(e) => (dispatch({ type: 'SET_YT_SRC', payload: e.target.value }))}/>
           <textarea placeholder='Enter Description (Max.Length 200)' maxLength="200" className="placeholder:italic p-2 rounded-lg border-4 w-100"
-            onChange={(e) => (dispatch({ type: 'SET_DESC', payload: e.target.value }))}/>
+            onChange={(e) => (dispatch({ type: 'SET_DESC', payload: e.target.value }))} />
+          <select
+            className='py-2 px-1 rounded-full bg-amber-300'
+          onChange={(e) => (dispatch({
+            type: 'SET_NICHE',
+            payload: e.target.value
+          }))}>
+            {niches.map((niche) => (
+              <option key={niche}>{ niche }</option>
+            ))}
+            </select>
           <div className='flex flex-col gap-0.5'>
             <input type="text" className="placeholder:italic p-1 rounded-lg border-4 w-100" maxLength="40" placeholder="Add Tags"
               onBlur={(e) => pushToTagsArray(e.target.value)} />

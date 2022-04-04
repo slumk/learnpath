@@ -34,7 +34,7 @@ const MyInfo = () => {
       <div className='container mx-auto flex flex-col lg:gap-8'>
           <div className=' flex flex-col gap-1'>
         <img src={userIcon} className='mx-auto' />
-        <button className='w-30 mx-auto text-xl p-2 border-2' onClick = {(e) => {
+        <button className='mx-auto text-xl rounded-full p-2 bg-green-300 hover:shadow-xl hover:bg-red-400 border-2' onClick = {(e) => {
           if (logoutUser()) {
             setAuth({
               ...auth,

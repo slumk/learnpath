@@ -47,7 +47,7 @@ const UpvoteGrid = ({ capsuleId }) => {
     return setCapsuleInfo(await capsuleInfo)
   }, [])
   return (
-      <div className='pt-5'>
+      <div>
         <SearchResults key={capsuleId} capsule={capsuleInfo} />
         </div>
   )

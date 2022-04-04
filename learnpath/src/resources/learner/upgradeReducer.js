@@ -12,6 +12,8 @@ export const upgradeReducer = (state, action) => {
       return { ...state, ...{ desc: action.payload } }
     case 'SET_URL':
       return { ...state, ...{ publichandle: action.payload } }
+    case 'SET_NICHE':
+      return { ...state, ...{ niche: action.payload } }
     default:
       break
   }

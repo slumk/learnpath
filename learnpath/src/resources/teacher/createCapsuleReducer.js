@@ -2,6 +2,7 @@ export const initialData = {
   label: '',
   yt_src: '',
   description: '',
+  niche: 'Programming',
   tags: [],
   isCreationSuccess: false,
   moonjya: false
@@ -17,6 +18,8 @@ export const createCapsuleReducer = (state, action) => {
       return { ...state, ...{ description: action.payload } }
     case 'SET_TAGS':
       return { ...state, ...{ tags: action.payload } }
+    case 'SET_NICHE':
+      return { ...state, ...{ niche: action.payload } }
     case 'IT_WORKED':
       return { ...state, ...{ isCreationSuccess: true } }
     case 'MOONJI':
