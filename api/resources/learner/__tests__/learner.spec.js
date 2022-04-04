@@ -15,6 +15,7 @@ beforeAll(async () => {
 		_id: '620fa734dd24eb1316beabff',
 		yt_src: 'somerandomlinkman',
 		label: 'test_label',
+		niche: 'Programming',
 		description: 'this is a test description about test',
 		created_by: new mongoose.Types.ObjectId(),
 		tags: ['test-1', 'test-2', 'test-3'],
@@ -29,6 +30,7 @@ beforeAll(async () => {
 		email: 'testuser@gmail.com',
 		gender: 'M',
 		password: 'mytestpassword',
+		region: 'Asia Pacific',
 		age: 25,        
 	})
 	await test_user.save()
@@ -36,6 +38,7 @@ beforeAll(async () => {
 	const test_teacher = new teacherModel({
 		_id: '620fb734dd24eb1316beacff',
 		teacher_name: 'teacher',
+		niche: 'Programming',
 		teacher_desc: 'this is a test description',
 		portfolio: 'instagram.com/testhandle',
 		learner_id: new mongoose.Types.ObjectId()
@@ -46,7 +49,7 @@ beforeAll(async () => {
 test('Upvoting Capsule', async () => {
 	await upvoteCapsule('620fa734dd24eb1316beabff')
 	const capsule = await capsuleModel.findById('620fa734dd24eb1316beabff')
-	expect(capsule.upvote_count).toBe(1)
+	expect(await capsule.upvote_count).toBe(1)
 })
 
 test('Un-Upvotes a capsule', async () => {
@@ -85,7 +88,8 @@ test('Requests Upgrade To Teacher', async () => {
 	req_mock.body = {
 		name: 'teacher',
 		desc: 'this is a test description',
-		publichandle: 'instagram.com/testhandle'
+		publichandle: 'instagram.com/testhandle',
+		niche: 'Programming'
 	}
 	req_mock.user_id = new mongoose.Types.ObjectId()
 	await requestUpgradeToTeacher(req_mock)

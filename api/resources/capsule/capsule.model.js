@@ -13,6 +13,23 @@ const capsuleSchema = new mongoose.Schema(
 			maxlength: 40,
 			text: true
 		},
+		niche: {
+			type: String,
+			required: true,
+			enum: [
+				'Programming',
+				'Mathematics',
+				'Science',
+				'English',
+				'History',
+				'Art',
+				'Music',
+				'Drama',
+				'Physical Education',
+				'Foreign Languages',
+				'Other'
+			]
+		},
 		description: {
 			type: String,
 			required: true,

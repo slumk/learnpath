@@ -14,6 +14,7 @@ beforeAll(async () => {
 		label: 'test_label',
 		description: 'this is a test description about test',
 		created_by: new mongoose.Types.ObjectId(),
+		niche: 'Programming',
 		tags: ['test-1', 'test-2', 'test-3']
 	})
 	await test_entry.save()
@@ -40,6 +41,7 @@ test('Creating Capsule', async () => {
 		yt_src: 'www.youtube.com/watch/test_video',
 		label: 'test name',
 		description: 'this is a test-description',
+		niche: 'Programming',
 		tags: ['test1', 'test2'],
 	}
 	req_mock.teacher_id = new mongoose.Types.ObjectId()

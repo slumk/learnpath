@@ -21,12 +21,41 @@ const teacherSchema = new mongoose.Schema(
 			required: true,
 			maxlength: 300
 		},
+		niche: {
+			type: String,
+			required: true,
+			enum: [
+				'Programming',
+				'Mathematics',
+				'Science',
+				'English',
+				'History',
+				'Art',
+				'Music',
+				'Drama',
+				'Physical Education',
+				'Foreign Languages',
+				'Other'
+			]
+		},
 		portfolio: {
 			type: String,
 		},
 		report_count: {
 			type: Number,
 			default: 0
+		},
+		report_reason: {
+			type: String,
+			enum: [
+				'Fraudulent Content',
+				'Defamation',
+				'Pornographic Content',
+				'Child Abuse',
+				'Other',
+				''
+			],
+			default: ''
 		},
 		is_banned: {
 			type: Boolean,

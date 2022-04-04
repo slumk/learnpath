@@ -16,6 +16,7 @@ beforeAll(async () => {
 		_id: '620fa734dd24eb1316beabff',
 		yt_src: 'somerandomlinkman',
 		label: 'test_label',
+		niche: 'Programming',
 		description: 'this is a test description about test',
 		created_by: new mongoose.Types.ObjectId(),
 		tags: ['test-1', 'test-2', 'test-3'],
@@ -41,6 +42,7 @@ beforeAll(async () => {
 	test_entry = new teacherModel({
 		_id: '620fabb4d9f218213b6243c9',
 		learner_id: new mongoose.Types.ObjectId(),
+		niche: 'Programming',
 		teacher_name: 'test-teacher',
 		teacher_desc: 'this is a test description about teacher',
 		report_count: 5
