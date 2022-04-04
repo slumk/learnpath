@@ -16,7 +16,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./api
+        working-directory: api
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
