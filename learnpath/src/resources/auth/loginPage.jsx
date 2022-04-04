@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { AuthContext, BubbleMessageContext } from '../../App'
 import LoginIcon from '../../icons/login.png'
 import { handleSubmit } from './loginSubmit'
@@ -7,7 +7,6 @@ import { handleSubmit } from './loginSubmit'
 const LoginPage = () => {
   const { setAuth } = useContext(AuthContext)
   const { updateBubbleMessage, updateMessageDisplayStatus } = useContext(BubbleMessageContext)
-  const navigate = useNavigate()
   document.title = 'LearnPath - Login'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,7 +21,9 @@ const LoginPage = () => {
               setAuth((prevAuthStatus) => {
                 return { ...prevAuthStatus, ...{ isLoggedin: true } }
               })
-              return navigate('/')
+              updateBubbleMessage('Logged In Successfully')
+              updateMessageDisplayStatus(true)
+              return history.back()
             }
             updateBubbleMessage('Check Username And Password Again')
             updateMessageDisplayStatus(true)

@@ -6,7 +6,6 @@ import userIcon from '../../icons/user.png'
 import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
 import reportIcon from '../../icons/report.png'
-import { fetchTeacherName } from './fetchTeacherInfo'
 import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
 import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
 import { AuthContext, BubbleMessageContext } from '../../App'
@@ -48,7 +47,7 @@ const FetchCapsuleInfo = () => {
     setCapsule(await gotCapsule)
     await stripYtId(await gotCapsule.yt_src)
     setUpvoteCount(await gotCapsule.upvote_count)
-    updateTeacherName(await fetchTeacherName(await gotCapsule.created_by))
+    updateTeacherName(await gotCapsule.created_by.teacher_name)
     auth.learner_bookmarks.forEach(async (bookmarkedElement) => {
       if (bookmarkedElement === await gotCapsule._id) {
         setBookmarkStatus(true)
@@ -138,13 +137,20 @@ const FetchCapsuleInfo = () => {
               <h1 className='self-center'>Tags: </h1>
               {(capsule.tags)
                 ? (capsule.tags).map((tag) => (
-                  <span key={tag} className='bg-blue-200 rounded-xl p-1'>{tag}</span>
+                  <button key={tag}
+                    className='bg-blue-200 hover:bg-blue-400 rounded-xl p-1'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      return navigate('/search/' + tag)
+                    }}>
+                    {tag}
+                  </button>
                   ))
                 : null }
             </div>
         </div>
         <Suspense fallback={<FallBackLoader />}>
-            {isTeacherInfoShown ? <TeacherInfo teacherId={capsule.created_by} /> : null}
+            {isTeacherInfoShown ? <TeacherInfo teacher={capsule.created_by} /> : null}
         </Suspense>
       </div>
       {isReportDialogueShown ? <ReportModal><ReportCapsule capsule={capsule} updateReportDialogueStatus={updateState} updateIconStatus={updateIconStatus} /></ReportModal> : null}

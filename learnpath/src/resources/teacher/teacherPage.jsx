@@ -5,8 +5,8 @@ import { Link, Route, Routes } from 'react-router-dom'
 import { CreateCapsule } from './createCapsule'
 import { lazy, Suspense } from 'react'
 import FallBackLoader from '../utils/fallbackLoader'
-const ReportedCapsules = lazy(() => import('./reportedCapsules'))
-const MyCapsules = lazy(() => import('./myCapsules'))
+const ReportedCapsules = lazy(() => import('../utils/reusable_components/reportedCapsules'))
+const MyCapsules = lazy(() => import('../utils/reusable_components/myCapsules'))
 
 const TeacherMenu = () => {
   return (

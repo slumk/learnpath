@@ -30,7 +30,7 @@ const NavBarComponent = (props) => {
         <form className='flex flex-col gap-2 lg:flex-row self-center' onSubmit={(e) => {
           e.preventDefault()
           if (!searchTerm) {
-            return null
+            return navigate('/')
           }
           navigate('/search/' + searchTerm)
           return updateSearchTerm('')

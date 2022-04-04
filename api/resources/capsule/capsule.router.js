@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { fetchOwnCapsules } from '../teacher/teacher.controller.js'
-import { fetchCapsules, fetchSingleCapsule, fetchTeacherDetails, reportCapsule, searchCapsule } from './capsule.controller.js'
+import { fetchCapsules, fetchSingleCapsule, reportCapsule, searchCapsule } from './capsule.controller.js'
 const capsuleRouter = Router()
 // fetching capsules for home screen
 capsuleRouter.get('/', async (req, res) => {
@@ -36,14 +36,6 @@ capsuleRouter.put('/capsule/report/:id', async (req, res) => {
 		return res.status(202).end()
 	}
 	return res.status(404).end()
-})
-
-capsuleRouter.get('/teacher/:id', async (req, res) => {
-	const response = await fetchTeacherDetails(req.params.id)
-	if (!response) {
-		return res.status(404).end()
-	}
-	return res.status(200).json(response).end()
 })
 
 capsuleRouter.get('/fetch/of/:teacherId', async (req, res) => {

@@ -9,13 +9,23 @@ import userIcon from '../../icons/user.png'
 import './custom_fonts.css'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 import { chopBookmarksAndUpvoted } from '../learner/fetchLearnerInfo'
-import { fetchTeacherName } from './fetchTeacherInfo'
 
 const FetchCapsules = () => {
   const { god, setGodPlace } = useContext(GodContext)
   const { auth, setAuth } = useContext(AuthContext)
   const [capsules, setCapsules] = useState([])
   const [refresh, setwannaRefresh] = useState(false)
+  const [topic, updateTopic] = useState('')
+  const subjects = [
+    'programming',
+    'mathematics',
+    'science',
+    'english',
+    'history',
+    'art',
+    'music',
+    'drama'
+  ]
   useEffect(async () => {
     setGodPlace({ ...god, ...{ isGodHere: false } })
     const gotCapsules = await fetchCapsules()
@@ -29,15 +39,35 @@ const FetchCapsules = () => {
         learner_upvoted_capsules: await bookmarkAndUpvoted[1]
       }
     })
-  }, [refresh])
+  }, [refresh, topic])
   return (
-    <div>
+    <div className='grid'>
       <div className='flex justify-center pt-2'>
         <img src={refreshIcon}
           width="40px" height="40px"
           className={refresh ? 'animate-spin' : ''}
           onClick={(e) => setwannaRefresh(true) }/>
-    </div>
+      </div>
+      <div className='grid justify-center lg:grid-cols-4 grid-cols-2 gap-3'>
+        {subjects.map((subject) => (
+          <button key={subject}
+            className={`rounded-full mx-5 py-2 ${(topic === subject ? 'bg-red-500' : 'hover:bg-green-500 bg-green-200')} `}
+            disabled={ topic === subject }
+            onClick={ (e) => updateTopic(subject) }
+          >
+            { subject[0].toUpperCase() + subject.slice(1) }
+          </button>
+        )) }
+      </div>
+      <h1 className='text-center font-serif text-3xl my-3 '>{
+        topic
+          ? <span>
+            Capsules Of <span className='italic font-bold'>
+              {topic[0].toUpperCase() + topic.slice(1)}
+            </span>
+            </span>
+          : 'Capsules For You'
+      }</h1>
     <div className='container my-3 mx-auto grid lg:grid-cols-4 gap-3'>
       {capsules.map((item) => (
         <CapsuleGrid key={item._id} capsule={item} />
@@ -65,11 +95,9 @@ export const CapsuleGrid = ({ capsule }) => {
   const { auth } = useContext(AuthContext)
   const [isBookmarked, setBookmarkStatus] = useState(false)
   const [thumbnailLink, setThumbnailLink] = useState('')
-  const [creatorName, updateName] = useState('')
   useEffect(async () => {
     setThumbnailLink(buildThumbnailURL(await capsule))
     try {
-      updateName(await fetchTeacherName(capsule.created_by))
       await (auth.learner_bookmarks).forEach(bookmarkedEndi => {
         if (bookmarkedEndi === capsule._id) {
           return setBookmarkStatus(true)
@@ -85,7 +113,9 @@ export const CapsuleGrid = ({ capsule }) => {
       <h1 className='"absolute inset-x-0 bottom-0 text-center text-2xl' id='capsule-title'>{capsule.label}</h1>
       <div className='flex'>
         <img src={userIcon} width="24px"/>
-        <span className='self-center text-sm italic'>{ creatorName }</span>
+        <span className='self-center text-sm italic'>
+          { capsule.created_by.teacher_name }
+        </span>
       </div>
     <div className='grid grid-cols-2 p-1'>
       <div className='flex'>
