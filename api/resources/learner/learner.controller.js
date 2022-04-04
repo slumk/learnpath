@@ -5,13 +5,14 @@ import { modModel } from '../mod/mod.model.js'
 
 export const requestUpgradeToTeacher = async (req) => {
 	try {
-		const { name, desc, publichandle } = req.body
+		const { name, desc, publichandle, niche } = req.body
 		await teacherModel.create(
 			{ 
 				learner_id: req.user_id,
 				teacher_name: name,
 				teacher_desc: desc,
-				portfolio: publichandle
+				portfolio: publichandle,
+				niche: niche
 			}
 		)
 		return true
@@ -113,11 +114,11 @@ export const fetchLearnerRelations = async (user_id) => {
 			is_mod: false,
 		}
 		const is_teacher = await teacherModel.find({ learner_id: user_id }).lean()
-		const is_mod = await modModel.find({ learner_id: user_id }).toString()
+		const is_mod = await modModel.find({ learner_id: user_id }).lean()
 		if (await is_teacher[0]) {
 			is_teacher[0].is_approved ? user.is_teacher = true : user.is_teacher = 'requested'
 		}
-		if (await is_mod) {
+		if (await is_mod[0]) {
 			user.is_mod = true
 		}
 		return user

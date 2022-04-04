@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 
 export const db_connect = async () => { 
 	try {
@@ -10,6 +11,7 @@ export const db_connect = async () => {
 }
 
 export const test_db_connect = async () => {
+	dotenv.config()
 	try {
 		await mongoose.connect(process.env.MONGO_TEST_URI)
 		console.log('Connected to Test DB')
