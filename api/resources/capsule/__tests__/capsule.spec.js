@@ -41,8 +41,8 @@ test('Fetching All Capsules', async () => {
 
 test('Fetching Single Capsule Details', async () => {
 	const capsule = await fetchSingleCapsule('620fa734dd24eb1316beabff')
+	console.log(capsule)
 	expect(capsule).not.toBe([])
-	expect(capsule).toBeTruthy()
 })
 
 test('reporting capsule', async () => {

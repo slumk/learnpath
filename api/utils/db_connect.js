@@ -14,7 +14,6 @@ export const test_db_connect = async () => {
 	dotenv.config()
 	try {
 		await mongoose.connect(process.env.MONGO_TEST_URI)
-		console.log('Connected to Test DB')
 	} catch (error) {
 		console.error(error)
 	}

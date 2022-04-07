@@ -4,6 +4,13 @@ export const fetchSingleCapsule = async (id) => {
 		const capsule = await capsuleModel
 			.findById(id)
 			.populate('created_by')
+			.populate({
+				path: 'comments',
+				populate: {
+					path: 'learner_id',
+					select: 'name'
+				}
+			})
 		if (!capsule) {
 			return false
 		}
@@ -21,7 +28,7 @@ export const fetchCapsules = async () => {
 				is_approved: true,
 				is_visible: true,
 			})
-			.populate('created_by')
+			.populate('created_by', 'teacher_name')
 		if (!capsules) {
 			return false
 		}

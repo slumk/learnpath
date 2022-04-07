@@ -6,6 +6,7 @@ import userIcon from '../../icons/user.png'
 import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
 import reportIcon from '../../icons/report.png'
+import commentIcon from '../../icons/comment.png'
 import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
 import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
 import { AuthContext, BubbleMessageContext } from '../../App'
@@ -13,6 +14,7 @@ import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
 import FallBackLoader from '../utils/fallbackLoader'
 import ReportModal from '../utils/reportReason'
 import ReportCapsule from './reportCapsule'
+import Comments from './commentCapsule'
 const TeacherInfo = lazy(() => import('./teacherInfo'))
 
 export const fetchCapsuleInfo = async (capsuleId) => {
@@ -33,10 +35,12 @@ const FetchCapsuleInfo = () => {
   const [ytId, setYtId] = useState('')
   const [isUpvoted, setUpvoteStatus] = useState(false)
   const [upvoteCount, setUpvoteCount] = useState(0)
+  const [commentMenu, showCommentMenu] = useState(false)
   const [isBookmarked, setBookmarkStatus] = useState(false)
   const [isTeacherInfoShown, toggleDisplayTeacherInfo] = useState(false)
   const [isReportDialogueShown, updateState] = useState(false)
   const [isReportIconShown, updateIconStatus] = useState(true)
+  const [needARefresh, toggleRefresh] = useState(false)
   const navigate = useNavigate()
   const stripYtId = async (ytSrc) => {
     const id = await ytSrc.slice(17)
@@ -49,17 +53,17 @@ const FetchCapsuleInfo = () => {
     setUpvoteCount(await gotCapsule.upvote_count)
     updateTeacherName(await gotCapsule.created_by.teacher_name)
     auth.learner_bookmarks.forEach(async (bookmarkedElement) => {
-      if (bookmarkedElement === await gotCapsule._id) {
+      if (bookmarkedElement._id === await gotCapsule._id) {
         setBookmarkStatus(true)
       }
     })
     auth.learner_upvoted_capsules.forEach(upvotedElement => {
-      if (upvotedElement === gotCapsule._id) {
+      if (upvotedElement._id === gotCapsule._id) {
         setUpvoteStatus(true)
       }
     })
     return null
-  }, [])
+  }, [needARefresh])
   return (
     <div className='py-10 bg-gradient-to-r from-gray-50 to-gray-100'>
       <div className='flex flex-col gap-3'>
@@ -67,18 +71,22 @@ const FetchCapsuleInfo = () => {
           <div className='flex gap-1'>
             <img src={userIcon} width="40px" />
             <span className='self-center cursor-default font-medium hover:font-semibold'
-            onClick={(e) => toggleDisplayTeacherInfo(!isTeacherInfoShown)}>
+              onClick={(e) => {
+                toggleDisplayTeacherInfo(!isTeacherInfoShown)
+                return showCommentMenu(false)
+              }}>
               {teacherName}
             </span>
           </div>
           <iframe className='border-2 border-black rounded-xl' width="560" height="315" src={`https://www.youtube.com/embed/${ytId}`} title="YouTube video player" frameBorder="0" allowFullScreen></iframe>
-          <div className='grid grid-cols-2'>
-            <span>
+          <div className='grid lg:grid-cols-2 justify-center'>
+            <span className='self-center'>
               Posted on {returnHumanizedDateAndTime(capsule.created_date)}
             </span>
         <div className='flex gap-2 justify-end'>
             <div className='flex'>
-              <img src={isUpvoted ? likedIcon : likeIcon}
+                <img width="25px"
+                  src={isUpvoted ? likedIcon : likeIcon}
                 onClick = {
                   auth.isLoggedin
                     ? async (e) => {
@@ -104,8 +112,20 @@ const FetchCapsuleInfo = () => {
                         updateMessageDisplayStatus(true)
                       }
                  } />
-              <span>{upvoteCount}</span></div>
-            <img src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
+                <span className='self-center'>{upvoteCount}</span></div>
+              <img src={commentIcon}
+                width="25px"
+                onClick={(e) => {
+                  if (!auth.isLoggedin) {
+                    e.preventDefault()
+                    updateBubbleMessage('Please Login To Comment')
+                    updateMessageDisplayStatus(true)
+                  }
+                  toggleDisplayTeacherInfo(false)
+                  return showCommentMenu(!commentMenu)
+                }}/>
+              <img width="25px"
+                src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
               onClick= {
                 auth.isLoggedin
                   ? async (e) => {
@@ -125,7 +145,8 @@ const FetchCapsuleInfo = () => {
                       updateMessageDisplayStatus(true)
                     }
             } />
-            <img src={reportIcon}
+              <img src={reportIcon}
+                width="25px"
           className={`${isReportIconShown ? null : 'hidden'}`}
               onClick={(event) => {
                 updateState(true)
@@ -147,10 +168,11 @@ const FetchCapsuleInfo = () => {
                   </button>
                   ))
                 : null }
-            </div>
+          </div>
+          {commentMenu ? <Comments capsule={capsule._id} comments={capsule.comments} refresh={ toggleRefresh }/> : null}
         </div>
         <Suspense fallback={<FallBackLoader />}>
-            {isTeacherInfoShown ? <TeacherInfo teacher={capsule.created_by} /> : null}
+            {isTeacherInfoShown ? <TeacherInfo teacher={capsule.created_by} currentCapsule={capsule._id} /> : null}
         </Suspense>
       </div>
       {isReportDialogueShown ? <ReportModal><ReportCapsule capsule={capsule} updateReportDialogueStatus={updateState} updateIconStatus={updateIconStatus} /></ReportModal> : null}

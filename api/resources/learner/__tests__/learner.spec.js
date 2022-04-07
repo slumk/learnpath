@@ -1,9 +1,10 @@
 import { test_db_connect } from '../../../utils/db_connect'
 import { capsuleModel } from '../../capsule/capsule.model'
 import mongoose from 'mongoose'
-import { requestUpgradeToTeacher, bookmarkCapsule, minusUpvoteCapsule, removeBookmark, requestAccountDeletion, upvoteCapsule, viewLearnerInfo, enrollCourse, reportTeacher } from '../learner.controller'
+import { requestUpgradeToTeacher, bookmarkCapsule, minusUpvoteCapsule, removeBookmark, requestAccountDeletion, upvoteCapsule, viewLearnerInfo, enrollCourse, reportTeacher, commentCapsule, reportComment } from '../learner.controller'
 import { learnerModel } from '../learner.model'
 import { teacherModel } from '../../teacher/teacher.model'
+import { commentModel } from '../comment.model'
 
 beforeAll(async () => {
 	await test_db_connect()
@@ -11,6 +12,7 @@ beforeAll(async () => {
 	// inserting a test entry in database
 	// setting capsule as approved and visible
 	// for testing purposes
+	await commentModel.deleteMany()
 	const test_entry = new capsuleModel({
 		_id: '620fa734dd24eb1316beabff',
 		yt_src: 'somerandomlinkman',
@@ -112,4 +114,38 @@ test('Reporting Teacher', async () => {
 	await reportTeacher('620fb734dd24eb1316beacff')
 	const teacher = await teacherModel.findById('620fb734dd24eb1316beacff')
 	expect(teacher.report_count).toBe(1)
+})
+
+test('Commenting Capsule', async () => {
+	await commentCapsule('620fa734dd24eb1316beacff'
+		, '620fa734dd24eb1316beabff'
+		, 'This is the worst capsule ever created in history'
+	)
+	await commentCapsule('620fa734dd24eb1316beacff'
+		, '620fa734dd24eb1316beabff'
+		, 'Boom Boom'
+	)
+	const capsule = await capsuleModel.findById('620fa734dd24eb1316beabff')
+		.populate({
+			path: 'comments',
+			populate: {
+				path: 'learner_id',
+				select: 'name'
+			}
+		})
+	expect(capsule.comments).not.toBe([])
+	expect(capsule.comments[0].learner_id).not.toBeNull()
+})
+
+test('Reporting Comment', async () => {
+	const dummyComment = await commentModel.create({
+		learner_id: '620fa734dd24eb1316beacff',
+		comment_text: 'This is a test comment'
+	})
+	await reportComment(dummyComment._id)
+	let updatedComment = await commentModel.findById(dummyComment._id)
+	expect(updatedComment.report_count).toBe(1)
+	await reportComment(dummyComment._id)
+	updatedComment = await commentModel.findById(dummyComment._id)
+	expect(updatedComment.report_count).toBe(2)
 })
