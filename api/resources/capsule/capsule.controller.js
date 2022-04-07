@@ -16,7 +16,7 @@ export const fetchSingleCapsule = async (id) => {
 		}
 		return { data: capsule }
 	} catch (error) {
-		console.error(error)
+		return false
 	}
 }
 
@@ -34,7 +34,6 @@ export const fetchCapsules = async () => {
 		}
 		return { data: capsules }
 	} catch (error) {
-		console.error(error)
 		return false
 	}
 }
@@ -47,7 +46,6 @@ export const reportCapsule = async (capsule_id, report_reason) => {
 			})
 		return true
 	} catch (error) {
-		console.error(error)
 		return false
 	}
 }
