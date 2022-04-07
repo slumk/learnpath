@@ -69,7 +69,6 @@ export const searchCapsule = async (search_term) => {
 		}
 		return { result: search_result }
 	} catch (error) {
-		console.error(error)
 		return false
 	}
 }
