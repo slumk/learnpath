@@ -9,10 +9,10 @@ import { commentModel } from '../comment.model'
 beforeAll(async () => {
 	await test_db_connect()
 	await capsuleModel.deleteMany() // clearing capsule model
+	await commentModel.deleteMany() // clearing comment model
 	// inserting a test entry in database
 	// setting capsule as approved and visible
 	// for testing purposes
-	await commentModel.deleteMany()
 	const test_entry = new capsuleModel({
 		_id: '620fa734dd24eb1316beabff',
 		yt_src: 'somerandomlinkman',
@@ -133,8 +133,8 @@ test('Commenting Capsule', async () => {
 				select: 'name'
 			}
 		})
-	expect(capsule.comments).not.toBe([])
-	expect(capsule.comments[0].learner_id).not.toBeNull()
+	expect(capsule.populated('comments')).toBeTruthy()
+	expect(capsule.comments.learner_id).not.toBeNull()
 })
 
 test('Reporting Comment', async () => {
@@ -142,10 +142,10 @@ test('Reporting Comment', async () => {
 		learner_id: '620fa734dd24eb1316beacff',
 		comment_text: 'This is a test comment'
 	})
-	await reportComment(dummyComment._id)
+	await reportComment(dummyComment._id, 'Adult Content')
 	let updatedComment = await commentModel.findById(dummyComment._id)
 	expect(updatedComment.report_count).toBe(1)
-	await reportComment(dummyComment._id)
+	await reportComment(dummyComment._id, 'Adult Content')
 	updatedComment = await commentModel.findById(dummyComment._id)
 	expect(updatedComment.report_count).toBe(2)
 })

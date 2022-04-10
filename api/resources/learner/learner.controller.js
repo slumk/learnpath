@@ -62,13 +62,15 @@ export const commentCapsule = async (user_id, capsule_id, text) => {
 	} 
 }
 
-export const reportComment = async (comment_id) => {
+export const reportComment = async (comment_id, report_reason) => {
 	try {
 		await commentModel.findByIdAndUpdate(comment_id,{
-			$inc: { report_count: 1 }
+			$inc: { report_count: 1 },
+			report_reason: report_reason
 		})
 		return true
 	} catch (error) {
+		console.error(error)
 		return false
 	}
 }

@@ -18,6 +18,16 @@ const commentSchema = new mongoose.Schema(
 		report_count: {
 			type: Number,
 			default: 0
+		},
+		report_reason: {
+			type: String,
+			enum: [
+				'Adult Content',
+				'Violent or Repulsive Content',
+				'Spam or Misleading',
+				''
+			],
+			default: ''
 		}
 	}
 )

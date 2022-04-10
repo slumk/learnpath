@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { protectForLearner } from '../../utils/auth/protectRoutes.js'
-import { fetchLearnerRelations ,upvoteCapsule, bookmarkCapsule, viewLearnerInfo, removeBookmark, requestUpgradeToTeacher, minusUpvoteCapsule, enrollCourse, reportTeacher, commentCapsule } from './learner.controller.js'
+import { fetchLearnerRelations ,upvoteCapsule, bookmarkCapsule, viewLearnerInfo, removeBookmark, requestUpgradeToTeacher, minusUpvoteCapsule, enrollCourse, reportTeacher, commentCapsule, reportComment } from './learner.controller.js'
 const learnerRouter = Router()
 
 learnerRouter.use( async (req, res, next) => ( protectForLearner(req, res, next) ))
@@ -28,6 +28,15 @@ learnerRouter.post('/comment/:id', async (req, res) => {
 		return res.status(200).end()
 	}
 	return res.status(404).end()
+})
+
+learnerRouter.put('/report/comment/:id', async (req, res) => {
+	const { report_reason } = req.body
+	const wasReportingSuccessful = await reportComment(req.params.id, report_reason)
+	if (wasReportingSuccessful) {
+		return res.status(202).end()
+	}
+	return res.status(400).end()
 })
 
 learnerRouter.put('/bookmark/:id', async (req, res) => {

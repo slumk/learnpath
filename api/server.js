@@ -19,7 +19,7 @@ app.use('/',apiRouter)
 dotenv.config()
 
 
-app.listen(8000, () => {
-	console.log('Listens on PORT 8000')
-})
+app.listen(process.env.PORT, () => (
+	null
+))
 db_connect()
