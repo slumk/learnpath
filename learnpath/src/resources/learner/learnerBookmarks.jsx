@@ -31,25 +31,17 @@ const LearnerBookmarks = ({ bookmarks }) => {
               { loading
                 ? '...'
                 : bookmarks.map(
-                  (capsuleId) => (
-                        <BookMarkGrid key={capsuleId} capsuleId={capsuleId} />
+                  (capsule) => (
+                        <BookMarkGrid key={capsule._id} capsule={capsule} />
                   ))
                   }
           </div>
   )
 }
-const BookMarkGrid = ({ capsuleId }) => {
-  const [capsuleInfo, setCapsuleInfo] = useState({})
-  useEffect(async () => {
-    const capsuleInfo = await fetchCapsuleInfo(capsuleId)
-    if (!capsuleInfo) {
-      await removeBookmark(capsuleId)
-    }
-    return setCapsuleInfo(await capsuleInfo)
-  }, [])
+const BookMarkGrid = ({ capsule }) => {
   return (
     <div className='justify-self-start pt-5'>
-      <SearchResults key={capsuleId} capsule={capsuleInfo} />
+      <SearchResults key={capsule._id} capsule={capsule} />
       </div>
   )
 }

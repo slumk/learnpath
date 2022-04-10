@@ -30,25 +30,17 @@ const LearnerUpvotedCapsules = ({ upvoted }) => {
                 { loading
                   ? '...'
                   : upvoted.map(
-                    (capsuleId) => (
-                          <UpvoteGrid key={capsuleId} capsuleId={capsuleId} />
+                    (eachSanam) => (
+                          <UpvoteGrid key={eachSanam._id} capsule={eachSanam} />
                     ))
                     }
             </div>
   )
 }
-const UpvoteGrid = ({ capsuleId }) => {
-  const [capsuleInfo, setCapsuleInfo] = useState({})
-  useEffect(async () => {
-    const capsuleInfo = await fetchCapsuleInfo(capsuleId)
-    if (!capsuleInfo) {
-      return await minusUpvoteCapsule(capsuleId)
-    }
-    return setCapsuleInfo(await capsuleInfo)
-  }, [])
+const UpvoteGrid = ({ capsule }) => {
   return (
       <div>
-        <SearchResults key={capsuleId} capsule={capsuleInfo} />
+        <SearchResults key={capsule._id} capsule={capsule} />
         </div>
   )
 }
