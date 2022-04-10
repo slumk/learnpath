@@ -48,6 +48,7 @@ const capsuleSchema = new mongoose.Schema(
 		},
 		comments: {
 			type: [mongoose.Types.ObjectId],
+			default: [],
 			ref: 'Comments'
 		},
 		report_count: {

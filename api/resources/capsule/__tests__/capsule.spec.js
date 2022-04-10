@@ -1,8 +1,10 @@
 import { test_db_connect } from '../../../utils/db_connect'
 import { capsuleModel } from '../capsule.model'
+import { commentModel } from '../../learner/comment.model'
 import mongoose from 'mongoose'
 import { fetchCapsules, fetchSingleCapsule, reportCapsule, searchCapsule } from '../capsule.controller'
 import { teacherModel } from '../../teacher/teacher.model'
+import { learnerModel } from '../../learner/learner.model'
 
 beforeAll(async () => {
 	await test_db_connect()
@@ -20,10 +22,23 @@ beforeAll(async () => {
 		learner_id: new mongoose.Types.ObjectId()
 	})
 	await test_teacher.save()
+	const test_user = await learnerModel.create({
+		name: 'test-user',
+		email: 'testuser1@gmail.com',
+		gender: 'M',
+		password: 'mytestpassword',
+		region: 'Asia Pacific',
+		age: 25,        
+	})
+	const dummyComment = await commentModel.create({
+		learner_id: test_user._id,
+		comment_text: 'This is a test comment'
+	})
 	const test_entry = new capsuleModel({
 		_id: '620fa734dd24eb1316beabff',
 		yt_src: 'somerandomlinkman',
 		label: 'test_label',
+		comments: [ dummyComment._id ],
 		description: 'this is a test description about test',
 		created_by: awesome_object_id,
 		tags: ['test-1', 'test-2', 'test-3'],
@@ -36,13 +51,14 @@ beforeAll(async () => {
 
 test('Fetching All Capsules', async () => {
 	const capsules_recieved = await fetchCapsules()
+	expect(capsules_recieved).toBeTruthy()
 	expect(capsules_recieved).not.toBe([])
 })
 
 test('Fetching Single Capsule Details', async () => {
 	const capsule = await fetchSingleCapsule('620fa734dd24eb1316beabff')
-	console.log(capsule)
 	expect(capsule).not.toBe([])
+	expect(capsule).toBeTruthy()
 })
 
 test('reporting capsule', async () => {

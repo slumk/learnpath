@@ -6,16 +6,19 @@ export const fetchSingleCapsule = async (id) => {
 			.populate('created_by')
 			.populate({
 				path: 'comments',
+				select: '-report_count',
 				populate: {
 					path: 'learner_id',
 					select: 'name'
-				}
+				},
+				options: { sort: { 'commented_date': -1 } }
 			})
 		if (!capsule) {
 			return false
 		}
 		return { data: capsule }
 	} catch (error) {
+		console.error(error)
 		return false
 	}
 }
@@ -27,8 +30,11 @@ export const fetchCapsules = async () => {
 			.find({
 				is_approved: true,
 				is_visible: true,
-			})
+			},
+			'-description -tags -is_approved -is_visible -comments -report_count -report_reason')
 			.populate('created_by', 'teacher_name')
+			.sort({ 'created_date': -1 })
+			.lean()
 		if (!capsules) {
 			return false
 		}
