@@ -15,17 +15,17 @@ const FetchCapsules = () => {
   const { auth, setAuth } = useContext(AuthContext)
   const [capsules, setCapsules] = useState([])
   const [refresh, setwannaRefresh] = useState(false)
-  const [topic, updateTopic] = useState('')
-  const subjects = [
-    'programming',
-    'mathematics',
-    'science',
-    'english',
-    'history',
-    'art',
-    'music',
-    'drama'
-  ]
+  // const [topic, updateTopic] = useState('')
+  // const subjects = [
+  //   'programming',
+  //   'mathematics',
+  //   'science',
+  //   'english',
+  //   'history',
+  //   'art',
+  //   'music',
+  //   'drama'
+  // ]
   useEffect(async () => {
     setGodPlace({ ...god, ...{ isGodHere: false } })
     const gotCapsules = await fetchCapsules()
@@ -39,7 +39,7 @@ const FetchCapsules = () => {
         learner_upvoted_capsules: await bookmarkAndUpvoted[1]
       }
     })
-  }, [refresh, topic])
+  }, [refresh])
   return (
     <div className='grid'>
       <div className='flex justify-center pt-2'>
@@ -48,7 +48,7 @@ const FetchCapsules = () => {
           className={refresh ? 'animate-spin' : ''}
           onClick={(e) => setwannaRefresh(true) }/>
       </div>
-      <div className='grid justify-center lg:grid-cols-4 grid-cols-2 gap-3'>
+      {/* <div className='grid justify-center lg:grid-cols-4 grid-cols-2 gap-3'>
         {subjects.map((subject) => (
           <button key={subject}
             className={`rounded-full mx-5 py-2 ${(topic === subject ? 'bg-red-500' : 'hover:bg-green-500 bg-green-200')} `}
@@ -58,8 +58,8 @@ const FetchCapsules = () => {
             { subject[0].toUpperCase() + subject.slice(1) }
           </button>
         )) }
-      </div>
-      <h1 className='text-center font-serif text-3xl my-3 '>{
+      </div> */}
+      {/* <h1 className='text-center font-serif text-3xl my-3 '>{
         topic
           ? <span>
             Capsules Of <span className='italic font-bold'>
@@ -67,7 +67,7 @@ const FetchCapsules = () => {
             </span>
             </span>
           : 'Capsules For You'
-      }</h1>
+      }</h1> */}
     <div className='container my-3 mx-auto grid lg:grid-cols-4 gap-3'>
       {capsules.map((item) => (
         <CapsuleGrid key={item._id} capsule={item} />

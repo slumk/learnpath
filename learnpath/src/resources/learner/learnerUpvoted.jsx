@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchCapsuleInfo } from '../capsule/fetchCapsuleInfo'
 import { SearchResults } from '../capsule/searchCapsule'
-import { minusUpvoteCapsule } from './upvoteCapsule'
 import notFoundIcon from '../../icons/nothing-found.png'
 
 const LearnerUpvotedCapsules = ({ upvoted }) => {
