@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
 import { fetchReportedCapsules } from '../../teacher/fetchReportedCapsules'
+import { modFetchReportedCapsules } from '../../mod/fetchReportedCapsules'
 import MyCapsuleGrid from './myCapsuleGrid'
 
-const ReportedCapsules = () => {
+const ReportedCapsules = ({ isMod }) => {
   const [reportedCapsules, updateReportedCapsules] = useState([])
   useEffect(async () => {
-    const reportedShits = await fetchReportedCapsules()
-    if (reportedShits) {
-      return updateReportedCapsules(reportedShits)
+    let reported = ''
+    if (isMod) {
+      reported = await modFetchReportedCapsules()
+    } else {
+      reported = await fetchReportedCapsules()
+    }
+    if (reported) {
+      return updateReportedCapsules(reported)
     }
     return null
   }, [])

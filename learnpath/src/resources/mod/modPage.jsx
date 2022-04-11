@@ -5,6 +5,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Modal from '../utils/modal'
 import ApproveEveryShit from './approveAny'
 import ProtectRouteForMod from '../utils/protectModRoute'
+import ReportedCapsules from '../utils/reusable_components/reportedCapsules'
 
 const ModPage = () => {
   return (
@@ -21,13 +22,16 @@ const ModPage = () => {
                       <span className='font-medium'>Approve Teacher</span>
                   </div>
                   <div className='flex flex-col'>
-                      <img src={reportIcon} className='mx-auto' width='64px' height='64px'/>
+                      <Link to='mod/view/reported/capsules'>
+                          <img src={reportIcon} className='mx-auto' width='64px' height='64px' />
+                        </Link>
                       <span className='font-medium'>Check Reported Capsules</span>
                       </div>
               </div>
               <Routes>
                   <Route path='mod/approve/capsules' element={<ProtectRouteForMod><Modal><ApproveEveryShit /></Modal></ProtectRouteForMod>} />
-                  <Route path='mod/approve/teachers' element={<ProtectRouteForMod><Modal><ApproveEveryShit teacher={ true }/></Modal></ProtectRouteForMod>} />
+                  <Route path='mod/approve/teachers' element={<ProtectRouteForMod><Modal><ApproveEveryShit teacher={true} /></Modal></ProtectRouteForMod>} />
+                  <Route path='mod/view/reported/capsules' element={<ReportedCapsules isMod={true} />} />
               </Routes>
               </div>
       </div>
