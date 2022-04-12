@@ -8,7 +8,7 @@ import refreshIcon from '../../icons/refresh.png'
 import userIcon from '../../icons/user.png'
 import './custom_fonts.css'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
-import { chopBookmarksAndUpvoted } from '../learner/fetchLearnerInfo'
+import { fetchLearnerInfo } from '../learner/fetchLearnerInfo'
 
 const FetchCapsules = () => {
   const { god, setGodPlace } = useContext(GodContext)
@@ -31,12 +31,12 @@ const FetchCapsules = () => {
     const gotCapsules = await fetchCapsules()
     setCapsules(gotCapsules)
     setwannaRefresh(false)
-    const bookmarkAndUpvoted = await chopBookmarksAndUpvoted()
+    const learnerInfo = await fetchLearnerInfo()
     setAuth({
       ...auth,
       ...{
-        learner_bookmarks: await bookmarkAndUpvoted[0],
-        learner_upvoted_capsules: await bookmarkAndUpvoted[1]
+        learner_bookmarks: await learnerInfo.bookmarks,
+        learner_upvoted_capsules: await learnerInfo.upvoted_capsules
       }
     })
   }, [refresh])
@@ -66,8 +66,8 @@ const FetchCapsules = () => {
               {topic[0].toUpperCase() + topic.slice(1)}
             </span>
             </span>
-          : 'Capsules For You'
-      }</h1> */}
+          : 'Capsules For You' */}
+      {/* }</h1> */}
     <div className='container my-3 mx-auto grid lg:grid-cols-4 gap-3'>
       {capsules.map((item) => (
         <CapsuleGrid key={item._id} capsule={item} />
@@ -99,7 +99,7 @@ export const CapsuleGrid = ({ capsule }) => {
     setThumbnailLink(buildThumbnailURL(await capsule))
     try {
       await (auth.learner_bookmarks).forEach(bookmarkedEndi => {
-        if (bookmarkedEndi === capsule._id) {
+        if (bookmarkedEndi._id === capsule._id) {
           return setBookmarkStatus(true)
         }
       })
@@ -109,21 +109,24 @@ export const CapsuleGrid = ({ capsule }) => {
   }, [auth, capsule])
   return (
   <div className='justify-center m-4 lg:m-0.5 rounded-lg border-slate-900 border-2 cursor-default relative'>
-      <Link to={ '/capsule/' + capsule._id }><img src={thumbnailLink} /></Link>
-      <h1 className='"absolute inset-x-0 bottom-0 text-center text-2xl' id='capsule-title'>{capsule.label}</h1>
+      <Link to={'/capsule/' + capsule._id}>
+        <img src={thumbnailLink} />
+      </Link>
+      <h1 className='text-center text-2xl' id='capsule-title'>{capsule.label}</h1>
+      <div className='grid lg:grid-cols-2 p-1'>
       <div className='flex'>
         <img src={userIcon} width="24px"/>
         <span className='self-center text-sm italic'>
           { capsule.created_by.teacher_name }
         </span>
       </div>
-    <div className='grid grid-cols-2 p-1'>
-      <div className='flex'>
+        <div className='flex gap-1 lg:justify-self-end'>
+          <div className='flex'>
           <img src={likedIcon}
             onClick = { (e) => e.preventDefault()}/>
-        <span className='mx-0.5'>{capsule.upvote_count}</span>
-      </div>
-        <div className='flex justify-end gap-1'>
+          <span className='mx-0.5'>{capsule.upvote_count}</span>
+          </div>
+          <div>
           <img className={auth.isLoggedin ? '' : 'hidden'} src={isBookmarked ? bookmarkedIcon : bookmarkIcon}
             onClick= {
               auth
@@ -142,6 +145,7 @@ export const CapsuleGrid = ({ capsule }) => {
           }
           />
         </div>
+      </div>
       </div>
     </div>)
 }

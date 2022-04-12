@@ -7,7 +7,7 @@ import bookmarkIcon from '../../icons/bookmark.png'
 import bookmarkedIcon from '../../icons/bookmarked.png'
 import reportIcon from '../../icons/report.png'
 import commentIcon from '../../icons/comment.png'
-import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
+import { returnHumanizedDateAndTime } from '../utils/helper_methods/returnHumanizedDateAndTime'
 import { minusUpvoteCapsule, upvoteCapsule } from '../learner/upvoteCapsule'
 import { AuthContext, BubbleMessageContext } from '../../App'
 import { bookmarkCapsule, removeBookmark } from '../learner/bookmarkCapsule'
@@ -62,10 +62,12 @@ const FetchCapsuleInfo = () => {
         setUpvoteStatus(true)
       }
     })
+    const capsuleInfoSection = document.getElementById('our-capsule')
+    capsuleInfoSection.scrollIntoView({ behavior: 'smooth' })
     return null
-  }, [needARefresh])
+  }, [needARefresh, capsuleId])
   return (
-    <div className='py-10 bg-gradient-to-r from-gray-50 to-gray-100'>
+    <div className='py-10 bg-gradient-to-r from-gray-50 to-gray-100' id='our-capsule'>
       <div className='flex flex-col gap-3'>
         <div className='grid gap-1 justify-center'>
           <div className='flex gap-1'>

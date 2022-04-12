@@ -2,7 +2,7 @@ import { useEffect, useReducer, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { buildThumbnailURL } from './fetchCapsules'
 import likedIcon from '../../icons/liked.png'
-import { returnHumanizedDateAndTime } from '../mod/pendingGrid'
+import { returnHumanizedDateAndTime } from '../utils/helper_methods/returnHumanizedDateAndTime'
 import loadingIcon from '../../icons/loading_big.png'
 
 const searchingState = {
@@ -38,7 +38,7 @@ export const SearchResults = ({ capsule }) => {
     setThumbnailLink(buildThumbnailURL(await capsule))
   }, [capsule])
   return (
-      <div className='p-3 m-3 mt-2 container flex justify-center'>
+      <div className='mt-2 container flex'>
         <div className='flex gap-2'>
         <Link to={'/capsule/' + capsule._id}>
           <img src={thumbnail} width="150px" height="200px" />
@@ -83,14 +83,17 @@ const SearchCapsule = () => {
     document.title = 'Search Results For ' + name
   }, [name])
   return (
-    <div>
+    <div className='container mx-auto'>
+      <h1 className='text-center font-bold text-2xl py-2'>
+        Search Results For { name }
+      </h1>
       {
         searchState.loading
           ? <Loading />
           : searchState.is_failed
             ? <NotFound />
             : searchState.got_response
-              ? <div className='mt-8'>
+              ? <div>
                 {(searchState.got_response.result).map((item) => <SearchResults key={item._id} capsule={item} />)}
               </div>
               : <div>Not Found </div>

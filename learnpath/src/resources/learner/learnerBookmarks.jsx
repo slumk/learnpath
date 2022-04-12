@@ -9,7 +9,7 @@ const LearnerBookmarks = ({ bookmarks }) => {
   }, [bookmarks])
   if (!(bookmarks.toString())) {
     return (
-      <div>
+      <div className='grid justify-center'>
         <h1 className='text-center text-3xl font-semibold underline p-0'>
                     Bookmarked Capsules
                 </h1>
