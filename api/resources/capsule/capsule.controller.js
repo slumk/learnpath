@@ -3,20 +3,18 @@ export const fetchSingleCapsule = async (id) => {
 	try {
 		const capsule = await capsuleModel
 			.findById(id)
-			.populate('created_by')
-			.populate({
-				path: 'comments',
-				select: '-report_count',
-				populate: {
-					path: 'learner_id',
-					select: 'name'
-				},
-				options: { sort: { 'commented_date': -1 } }
-			})
+			// .populate('created_by')
+			// .populate({
+			// 	path: 'comments',
+			// 	populate: {
+			// 		path: 'learner_id',
+			// 	},
+			// 	options: { sort: { 'commented_date': -1 } }
+			// })
 		if (!capsule) {
 			return false
 		}
-		return { data: capsule }
+		return capsule
 	} catch (error) {
 		console.error(error)
 		return false
@@ -30,16 +28,15 @@ export const fetchCapsules = async () => {
 			.find({
 				is_approved: true,
 				is_visible: true,
-			},
-			'-description -tags -is_approved -is_visible -comments -report_count -report_reason')
-			.populate('created_by', 'teacher_name')
+			})
 			.sort({ 'created_date': -1 })
 			.lean()
 		if (!capsules) {
 			return false
 		}
-		return { data: capsules }
+		return capsules
 	} catch (error) {
+		console.error(error)
 		return false
 	}
 }
@@ -71,7 +68,7 @@ export const searchCapsule = async (search_term) => {
 		if(!search_result.toString()){
 			return false
 		}
-		return { result: search_result }
+		return search_result
 	} catch (error) {
 		return false
 	}

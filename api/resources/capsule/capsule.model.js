@@ -38,8 +38,8 @@ const capsuleSchema = new mongoose.Schema(
 		},
 		created_by: {
 			type: mongoose.Types.ObjectId,
-			required: true,
-			ref: 'Teacher'
+			ref: 'Teacher',
+			required: true
 		},
 		tags: { type: [String] , text: true},
 		upvote_count: {
