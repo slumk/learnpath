@@ -1,16 +1,26 @@
 import { capsuleModel } from './capsule.model.js'
+import mongoose from 'mongoose'
 export const fetchSingleCapsule = async (id) => {
 	try {
 		const capsule = await capsuleModel
-			.findById(id)
-			// .populate('created_by')
-			// .populate({
-			// 	path: 'comments',
-			// 	populate: {
-			// 		path: 'learner_id',
-			// 	},
-			// 	options: { sort: { 'commented_date': -1 } }
-			// })
+			.aggregate([
+				{
+					$match: { _id: mongoose.Types.ObjectId(id) }
+				},
+				{
+					'$lookup': {
+						'from': 'teachers', 
+						'localField': 'created_by', 
+						'foreignField': '_id', 
+						'as': 'created_by'
+					}
+				}, {
+					'$lookup': {
+						'from': 'comments', 
+						'localField': 'comments', 
+						'foreignField': '_id', 
+						'as': 'comments'}
+				}])
 		if (!capsule) {
 			return false
 		}
@@ -25,16 +35,25 @@ export const fetchSingleCapsule = async (id) => {
 export const fetchCapsules = async () => {
 	try {
 		const capsules = await capsuleModel
-			.find({
-				is_approved: true,
-				is_visible: true,
-			})
-			.sort({ 'created_date': -1 })
-			.lean()
+			.aggregate([
+				{
+					$match: {
+						is_approved: true, 
+						is_visible: true
+					}
+				},
+				{
+					$lookup: {
+						from: 'teachers', 
+						localField: 'created_by', 
+						foreignField: '_id', 
+						as: 'created_by'
+					}
+				}])
 		if (!capsules) {
 			return false
 		}
-		return capsules
+		return capsules	
 	} catch (error) {
 		console.error(error)
 		return false
@@ -61,7 +80,8 @@ export const searchCapsule = async (search_term) => {
 					$or: [
 						{ label: new RegExp(search_term) },
 						{ tags: { $elemMatch: { $regex: new RegExp(search_term) } } },
-						{ description: new RegExp(search_term) }
+						{ description: new RegExp(search_term) },
+						{ niche: new RegExp(search_term) }
 					]
 				}
 			}])

@@ -1,23 +1,25 @@
 import { gql } from 'apollo-server-core'
 
 export const typeDefs = gql`
-    type Tag {
-        tag: String
-    }
     type Comment {
-        id: ID!,
+        _id: ID!,
         comment_text: String,
         commented_date: String,
         report_count: Int,
         report_reason: String
     }
+    type Teacher {
+        _id: ID
+        teacher_name: String
+        niche: String
+    }
     type Capsule {
         _id: ID!
         label: String!,
         yt_src: String!,
-        niche: String!,
+        niche: String,
         description: String!,
-        created_by: String,
+        created_by: [Teacher],
         tags: [String],
         upvote_count: Int,
         comments: [Comment],
@@ -29,7 +31,7 @@ export const typeDefs = gql`
     }
     type Query {
         capsules: [Capsule]!
-        capsule(id: String!): Capsule!
+        capsule(id: String!): [Capsule]!
     }
     type Mutation {
         reportCapsule(id: String!, reason: String!):Boolean!

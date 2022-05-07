@@ -24,8 +24,8 @@ const gqlServer = new ApolloServer({
 	typeDefs,
 	resolvers
 })
+db_connect()
 gqlServer.start().then(() => gqlServer.applyMiddleware({ app }))
 app.listen(process.env.PORT, () => (
 	null
 ))
-db_connect()
