@@ -6,8 +6,8 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import { ApolloServer } from 'apollo-server-express'
-import { typeDefs } from './resources/capsule/capsule.types.js'
-import { resolvers } from './resources/capsule/capsule.resolvers.js'
+import { fullTypeDefs } from './graphql/schema.js'
+import { resolvers } from './graphql/resolvers.js'
 
 const app = express()
 app.use(express.urlencoded({
@@ -21,11 +21,11 @@ app.use(cors())
 dotenv.config()
 
 const gqlServer = new ApolloServer({
-	typeDefs,
-	resolvers
+	typeDefs: fullTypeDefs,
+	resolvers: resolvers
 })
 db_connect()
 gqlServer.start().then(() => gqlServer.applyMiddleware({ app }))
 app.listen(process.env.PORT, () => (
-	null
+	console.log(`SERVER: http://localhost:${process.env.PORT}/graphql`)
 ))
