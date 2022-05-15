@@ -8,7 +8,6 @@ const typesArray = [
 typesArray.forEach(eachTypeDef => {
 	typeDef.push(eachTypeDef)
 })
-
 export const fullTypeDefs = gql(`
     ${typeDef.join('\n')}
 `)

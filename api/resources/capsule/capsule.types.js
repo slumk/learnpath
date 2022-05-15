@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-core'
 
-export const typeDefs = gql`
+export const capsuleTypeDefs = `
     type Comment {
         _id: ID!,
         comment_text: String,
@@ -30,11 +30,11 @@ export const typeDefs = gql`
         created_date: String
     }
     type Query {
-        capsules: [Capsule]!
-        capsule(id: String!): [Capsule]!
+        getCapsules: [Capsule]!
+        getCapsuleById(id: ID!): [Capsule]!
     }
     type Mutation {
-        reportCapsule(id: String!, reason: String!):Boolean!
+        reportCapsule(id: ID!, reason: String!):Boolean!
         searchCapsule(term: String!):[Capsule]
     }
 `

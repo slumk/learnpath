@@ -74,10 +74,6 @@ const capsuleSchema = new mongoose.Schema(
 		is_visible: {
 			type: Boolean,
 			default: false
-		},
-		created_date: {
-			type: Date,
-			default: Date.now()
 		}
-	})
+	},{ timestamps: true })
 export const capsuleModel = new mongoose.model('Capsule', capsuleSchema)

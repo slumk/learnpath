@@ -58,11 +58,6 @@ const learnerSchema = new mongoose.Schema(
 		requested_delete: {
 			type: Boolean,
 			default: false
-		},
-		joined_date: {
-			type: Date,
-			default: Date.now()
 		}
-	}
-)
+	}, { timestamps: true })
 export const learnerModel = new mongoose.model('Learner', learnerSchema)

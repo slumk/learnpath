@@ -1,11 +1,11 @@
 import { fetchCapsules, fetchSingleCapsule, reportCapsule, searchCapsule } from './capsule.controller.js'
 
-export const resolvers = {
+export const capsuleResolver = {
 	Query: {
-		capsules: async () => {
+		getCapsules: async () => {
 			return await fetchCapsules()
 		},
-		capsule: async (_, { id }) => {
+		getCapsuleById: async (_, { id }, context) => {
 			return await fetchSingleCapsule(id)
 		}
 	},

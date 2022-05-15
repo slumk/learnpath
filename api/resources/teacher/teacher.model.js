@@ -60,12 +60,8 @@ const teacherSchema = new mongoose.Schema(
 		is_banned: {
 			type: Boolean,
 			default: false
-		},
-		created_at: {
-			type: Date,
-			default: Date.now()
 		}
-	})
+	}, { timestamps: true })
 
 
 export const teacherModel = new mongoose.model('Teacher', teacherSchema)

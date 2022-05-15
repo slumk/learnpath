@@ -7,7 +7,7 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import { ApolloServer } from 'apollo-server-express'
 import { fullTypeDefs } from './graphql/schema.js'
-import { resolvers } from './graphql/resolvers.js'
+import { fullResolvers } from './graphql/resolvers.js'
 
 const app = express()
 app.use(express.urlencoded({
@@ -22,7 +22,10 @@ dotenv.config()
 
 const gqlServer = new ApolloServer({
 	typeDefs: fullTypeDefs,
-	resolvers: resolvers
+	resolvers: fullResolvers,
+	context: ({ req }) => ({
+		user_id: ''
+	})
 })
 db_connect()
 gqlServer.start().then(() => gqlServer.applyMiddleware({ app }))

@@ -1,10 +1,9 @@
 import { capsuleResolver } from '../resources/capsule/capsule.resolvers.js'
-import { guestAccess } from '../utils/auth/auth.controller.js'
-export const resolvers = {
+export const fullResolvers = {
 	Query: {
-		...guestAccess(capsuleResolver.Query)
+		...capsuleResolver.Query
 	},
 	Mutation: {
-		...guestAccess(capsuleResolver.Mutation)
+		...capsuleResolver.Mutation
 	}
 }
