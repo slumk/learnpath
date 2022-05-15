@@ -1,10 +1,8 @@
-import { gql } from 'apollo-server-core'
-
 export const capsuleTypeDefs = `
     type Comment {
         _id: ID!,
         comment_text: String,
-        commented_date: String,
+        createdAt: String,
         report_count: Int,
         report_reason: String
     }

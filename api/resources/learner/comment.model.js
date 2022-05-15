@@ -11,10 +11,6 @@ const commentSchema = new mongoose.Schema(
 			type: String,
 			required: true
 		},
-		commented_date: {
-			type: Date,
-			default: Date.now()
-		},
 		report_count: {
 			type: Number,
 			default: 0
@@ -29,6 +25,6 @@ const commentSchema = new mongoose.Schema(
 			],
 			default: ''
 		}
-	}
-)
+	}, { timestamps: true })
+
 export const commentModel = new mongoose.model('Comments', commentSchema)

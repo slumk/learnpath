@@ -1,15 +1,15 @@
 import { capsuleModel } from '../capsule/capsule.model.js'
 import { learnerModel } from './learner.model.js'
 import { teacherModel } from '../teacher/teacher.model.js'
-import { modModel } from '../mod/mod.model.js'
 import { commentModel } from './comment.model.js'
+import mongoose from 'mongoose'
 
-export const requestUpgradeToTeacher = async (req) => {
+export const requestUpgradeToTeacher = async (input, user_id) => {
 	try {
-		const { name, desc, publichandle, niche } = req.body
+		const { name, desc, publichandle, niche } = input
 		await teacherModel.create(
 			{ 
-				learner_id: req.user_id,
+				learner_id: user_id,
 				teacher_name: name,
 				teacher_desc: desc,
 				portfolio: publichandle,
@@ -25,11 +25,9 @@ export const requestUpgradeToTeacher = async (req) => {
 
 export const requestAccountDeletion = async (learner_id) => {
 	try {
-		await learnerModel.findByIdAndUpdate(learner_id,
-			{
-				requested_delete : true
-			}
-		)
+		await learnerModel.findByIdAndUpdate(learner_id, { requested_delete : true })
+		console.log(learner_id)
+		return true
 	} catch (error) {
 		console.error(error)
 		return false
@@ -107,12 +105,36 @@ export const removeBookmark = async (user_id, capsule_id) => {
 
 export const viewLearnerInfo = async (user_id) => {
 	try {
-		const learner = await learnerModel
-			.findById(user_id).select('-password -age')
-			.populate('bookmarks')
-			.populate('upvoted_capsules')
-			.lean()
-		return { data: learner }
+		const learner = await learnerModel.aggregate(
+		[
+			{
+			  $match: {
+				_id: mongoose.Types.ObjectId(user_id)
+			  }
+			}, {
+			  $lookup: {
+				from: 'teachers', 
+				localField: '_id', 
+				foreignField: 'learner_id', 
+				as: 'teacher_details'
+			  }
+			}, {
+			  $lookup: {
+				from: 'capsules', 
+				localField: 'bookmarks', 
+				foreignField: '_id', 
+				as: 'bookmarks'
+			  }
+			}, {
+			  $lookup: {
+				from: 'capsules', 
+				localField: 'upvoted_capsules', 
+				foreignField: '_id', 
+				as: 'upvoted_capsules'
+			  }
+			}
+		  ])
+		return learner[0]
 	} catch (error) {
 		console.error(error)
 		return false
@@ -136,26 +158,6 @@ export const reportTeacher = async (teacher_id) => {
 		return true
 	} catch (error) {
 		console.error(error)
-		return false
-	}
-}
-
-export const fetchLearnerRelations = async (user_id) => {
-	try {
-		const user = {
-			is_teacher: false,
-			is_mod: false,
-		}
-		const is_teacher = await teacherModel.find({ learner_id: user_id }).lean()
-		const is_mod = await modModel.find({ learner_id: user_id }).lean()
-		if (await is_teacher[0]) {
-			is_teacher[0].is_approved ? user.is_teacher = true : user.is_teacher = 'requested'
-		}
-		if (await is_mod[0]) {
-			user.is_mod = true
-		}
-		return user
-	} catch (error) {
 		return false
 	}
 }

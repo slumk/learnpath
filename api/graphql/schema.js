@@ -1,9 +1,11 @@
 import { capsuleTypeDefs } from '../resources/capsule/capsule.types.js'
+import { learnerTypeDefs } from '../resources/learner/learner.types.js'
 import { gql } from 'apollo-server-core'
 
 let typeDef = []
 const typesArray = [
-	capsuleTypeDefs
+	capsuleTypeDefs,
+	learnerTypeDefs
 ]
 typesArray.forEach(eachTypeDef => {
 	typeDef.push(eachTypeDef)

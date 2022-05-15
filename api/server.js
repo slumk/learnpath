@@ -24,7 +24,7 @@ const gqlServer = new ApolloServer({
 	typeDefs: fullTypeDefs,
 	resolvers: fullResolvers,
 	context: ({ req }) => ({
-		user_id: ''
+		user_id: '6280617bdde72a74f9ab9b5d',
 	})
 })
 db_connect()
