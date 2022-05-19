@@ -20,6 +20,8 @@ export const fetchSingleCapsule = async (id) => {
 						'localField': 'comments', 
 						'foreignField': '_id', 
 						'as': 'comments'}
+				}, {
+					$unwind: "$created_by"
 				}])
 		if (!capsule) {
 			return false
@@ -49,6 +51,8 @@ export const fetchCapsules = async () => {
 						foreignField: '_id', 
 						as: 'created_by'
 					}
+				}, {
+					$unwind: "$created_by"
 				}])
 		if (!capsules) {
 			return false

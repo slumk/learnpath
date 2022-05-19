@@ -17,7 +17,7 @@ export const capsuleTypeDefs = `
         yt_src: String!,
         niche: String,
         description: String!,
-        created_by: [Teacher],
+        created_by: Teacher,
         tags: [String],
         upvote_count: Int,
         comments: [Comment],
