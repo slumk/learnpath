@@ -1,41 +1,41 @@
 import bcrypt from 'bcryptjs'
 import { learnerModel } from '../../resources/learner/learner.model.js'
-import { modModel } from '../../resources/mod/mod.model.js'
-import { teacherModel } from '../../resources/teacher/teacher.model.js'
 import { makeToken } from './jwtOps.js'
 
-export const loginLearner = async (learner_email, password) => {
+export const loginLearner = async (input) => {
 	try {
-		const learner = await learnerModel.findOne({ email: learner_email })
+		const learner = await learnerModel.findOne({ email: input.email })
 			.select('password')
-		const teacher = await teacherModel.findOne({
-			learner_id: learner._id
-		})
-		const match = await bcrypt.compare(password, learner.password)
+		const match = await bcrypt.compare(input.password, learner.password)
 		if (match) {
 			const user_id = (learner._id).toString()
 			const token = makeToken(user_id)
-			return { user_token: token }
+			return {
+				isSuccessful: true,
+				token: token
+			}
 		}
-		return false
+		return { 
+			isSuccessful: false
+		 }
 		
 	} catch (error) {
 		console.error(error)
-		return false
+		return { isSuccessful: false }
 	}
 }
 
-export const createLearner = async (learner_name, learner_email, password, age, gender, region) => {
+export const createLearner = async (input) => {
 	try {
-		const password_hash = await bcrypt.hash(password, 10)
+		const password_hash = await bcrypt.hash(input.password, 10)
 		await learnerModel.create(
 			{
-				name : learner_name,
-				email : learner_email,
+				name : input.name,
+				email : input.email,
 				password: password_hash,
-				age: age,
-				gender: gender,
-				region: region
+				age: input.age,
+				gender: input.gender,
+				region: input.region
 			})
 		return true
 	}

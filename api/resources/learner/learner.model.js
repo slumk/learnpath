@@ -33,7 +33,7 @@ const learnerSchema = new mongoose.Schema(
 		region: {
 			type: String,
 			required: true,
-			enum: ['Asia Pacific', 'Americas', 'Europe', 'Middle East']
+			enum: ['AsiaPacific', 'Americas', 'Europe', 'MiddleEast']
 		},
 		// is_email_verified: {
 		// 	type: Boolean,
