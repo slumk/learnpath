@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import { ApolloServer } from 'apollo-server-express'
 import { fullTypeDefs } from './graphql/schema.js'
 import { fullResolvers } from './graphql/resolvers.js'
+import { checkAuthStatus } from './utils/auth/protectRoutes.js'
 
 const app = express()
 app.use(express.urlencoded({
@@ -24,7 +25,7 @@ const gqlServer = new ApolloServer({
 	typeDefs: fullTypeDefs,
 	resolvers: fullResolvers,
 	context: ({ req }) => ({
-		user_id: '6280617bdde72a74f9ab9b5d',
+		user_id: checkAuthStatus(req.headers.authorization || "")
 	})
 })
 db_connect()

@@ -9,11 +9,11 @@ export const makeToken = (id) => {
 }
 
 export const decipherToken = async (token) => {
-	const value = jwt.verify(token, process.env.JWT_SECRET, (err, decoded_shit) => {
+	const value = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
 		if (err) {
 			return false
 		}
-		return { gotcha : decoded_shit }
+		return user
 	})
 	return value
 }
