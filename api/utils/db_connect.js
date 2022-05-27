@@ -3,7 +3,8 @@ import dotenv from 'dotenv'
 
 export const db_connect = async () => { 
 	try {
-		await mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/learnpath")
+		await mongoose.connect(process.env.MONGO_URI)
+		console.log("DB Active")
 	} catch (error) {
 		console.error(error)
 	}

@@ -1,41 +1,34 @@
 import { capsuleModel } from './capsule.model.js'
-import mongoose from 'mongoose'
+
 export const fetchSingleCapsule = async (id) => {
 	try {
-		const capsule = await capsuleModel
-			.aggregate([
-				{
-					$match: { _id: mongoose.Types.ObjectId(id) }
-				},
-				{
-					'$lookup': {
-						'from': 'teachers', 
-						'localField': 'created_by', 
-						'foreignField': '_id', 
-						'as': 'created_by'
-					}
-				}, {
-					'$lookup': {
-						'from': 'comments', 
-						'localField': 'comments', 
-						'foreignField': '_id', 
-						'as': 'comments'}
-				}, {
-					$unwind: "$created_by"
-				}])
-		if (!capsule) {
-			return false
-		}
+		const capsule = await capsuleModel.findById(id)
+			.populate('created_by')
+			.populate({
+				path: 'comments',
+				populate: { path: 'learner_id' }
+			})
 		return capsule
 	} catch (error) {
 		console.error(error)
-		return false
+		return {}
 	}
 }
 
 
-export const fetchCapsules = async () => {
+export const fetchCapsules = async (input, filter) => {
 	try {
+		const matchCondition = { $match: {} }
+		if (filter){
+			if (filter.searchText){
+				matchCondition.$match.$or = [
+					{ label: { $regex: filter.searchText, $options: 'i' } },
+					{ tags: { $elemMatch: { $regex: filter.searchText, $options: 'i' } } },
+					{ description: { $regex: filter.searchText, $options: 'i' } },
+					{ niche: { $regex: filter.searchText, $options: 'i' } }
+				]
+			}
+		}
 		const capsules = await capsuleModel
 			.aggregate([
 				{
@@ -53,14 +46,15 @@ export const fetchCapsules = async () => {
 					}
 				}, {
 					$unwind: "$created_by"
+				}, {
+					$skip: input.skip
+				}, {
+					$limit: input.limit
 				}])
-		if (!capsules) {
-			return false
-		}
 		return capsules	
 	} catch (error) {
 		console.error(error)
-		return false
+		return {}
 	}
 }
 export const reportCapsule = async (capsule_id, report_reason) => {
@@ -71,28 +65,6 @@ export const reportCapsule = async (capsule_id, report_reason) => {
 				report_reason: report_reason
 			})
 		return true
-	} catch (error) {
-		return false
-	}
-}
-
-export const searchCapsule = async (search_term) => {
-	try {
-		const search_result = await capsuleModel
-			.aggregate([{
-				$match: {
-					$or: [
-						{ label: new RegExp(search_term) },
-						{ tags: { $elemMatch: { $regex: new RegExp(search_term) } } },
-						{ description: new RegExp(search_term) },
-						{ niche: new RegExp(search_term) }
-					]
-				}
-			}])
-		if(!search_result.toString()){
-			return false
-		}
-		return search_result
 	} catch (error) {
 		return false
 	}

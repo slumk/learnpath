@@ -1,7 +1,15 @@
 export const capsuleTypeDefs = `
+    input PageInput {
+        limit: Int!
+        skip: Int!
+    }
+    input CapsuleFilter {
+        searchText: String
+    }
     type Comment {
         _id: ID!,
         comment_text: String,
+        learner_id: Learner!
         createdAt: String,
         report_count: Int,
         report_reason: String
@@ -28,11 +36,10 @@ export const capsuleTypeDefs = `
         created_date: String
     }
     type Query {
-        getCapsules: [Capsule]!
-        getCapsuleById(id: ID!): [Capsule]!
+        getCapsules(input: PageInput!, filter: CapsuleFilter!): [Capsule]!
+        getCapsuleById(id: ID!): Capsule!
     }
     type Mutation {
         reportCapsule(id: ID!, reason: String!):Boolean!
-        searchCapsule(term: String!):[Capsule]
     }
 `

@@ -1,10 +1,5 @@
 api/node_modules
 api/.env
 api/.eslintrc.json
-learnpath/.eslintrc.json
-learnpath/node_modules
-learnpath/.parcel-cache
-learnpath/dist
 .vscode/
 api/utils/scripts/*
-startFrontAndBack.sh
