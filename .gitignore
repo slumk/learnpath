@@ -1,5 +1,5 @@
-api/node_modules
-api/.env
-api/.eslintrc.json
+node_modules
+.env
+.eslintrc.json
 .vscode/
-api/utils/scripts/*
+utils/scripts/*
