@@ -41,5 +41,10 @@ export const capsuleTypeDefs = `
     }
     type Mutation {
         reportCapsule(id: ID!, reason: String!):Boolean!
+        upvoteCapsule(capsuleId: ID!): Boolean!
+        minusUpvoteCapsule(capsuleId: ID!): Boolean!
+        bookmarkCapsule(capsuleId: ID!): Boolean!
+        removeBookmark(capsuleId: ID!): Boolean!
+        commentCapsule(capsuleId: ID!, text: String!): Boolean!
     }
 `

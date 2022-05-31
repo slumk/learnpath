@@ -1,4 +1,63 @@
 import { capsuleModel } from './capsule.model.js'
+import { learnerModel } from '../learner/learner.model.js'
+import { commentModel } from './comment/comment.model.js'
+
+export const minusUpvoteCapsule = async (user_id ,capsule_id) => {
+	try {
+		await capsuleModel.findByIdAndUpdate(capsule_id, { $inc: { upvote_count: -1 } })
+		await learnerModel.findByIdAndUpdate(user_id, { $pull: { upvoted_capsules: capsule_id } })
+		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+
+export const commentCapsule = async (user_id, capsule_id, text) => {
+	try {
+		const comment = await commentModel.create({
+			learner_id: user_id,
+			comment_text: text	
+		})
+		await capsuleModel.findByIdAndUpdate(capsule_id,
+			{ $addToSet: { comments: comment._id } })
+		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	} 
+}
+
+export const bookmarkCapsule = async (user_id, capsule_id) => {
+	try {
+		await learnerModel.findByIdAndUpdate(user_id, { $addToSet: { bookmarks: capsule_id } })
+		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+export const removeBookmark = async (user_id, capsule_id) => {
+	try {
+		await learnerModel.findByIdAndUpdate(user_id, { $pull: { bookmarks: capsule_id } })
+		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+
+
+export const upvoteCapsule = async (user_id, capsule_id) => {
+	try {
+		await capsuleModel.findByIdAndUpdate(capsule_id, { $inc: { upvote_count: 1 } })
+		await learnerModel.findByIdAndUpdate(user_id, { $addToSet: { upvoted_capsules: capsule_id } })
+		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
 
 export const fetchSingleCapsule = async (id) => {
 	try {
