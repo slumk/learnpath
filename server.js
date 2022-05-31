@@ -9,6 +9,7 @@ import { ApolloServer } from 'apollo-server-express'
 import { fullTypeDefs } from './graphql/schema.js'
 import { fullResolvers } from './graphql/resolvers.js'
 import { checkAuthStatus } from './utils/auth/protectRoutes.js'
+import config from './config.js'
 
 const app = express()
 app.use(express.urlencoded({
@@ -30,6 +31,6 @@ const gqlServer = new ApolloServer({
 })
 db_connect()
 gqlServer.start().then(() => gqlServer.applyMiddleware({ app }))
-app.listen(process.env.PORT, () => (
-	console.log(`SERVER: http://localhost:${process.env.PORT}/graphql`)
+app.listen(config.PORT, () => (
+	console.log(`SERVER: http://localhost:${config.PORT}/graphql`)
 ))
